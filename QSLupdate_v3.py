@@ -15,7 +15,7 @@ mhz="7.000"
 rst ="59"
 mode ="LSB"
 
-#default x=843 , y= 537
+#default QSL size x=843 , y= 537
 width=843
 height=537
 TEXT_SIZE=25
@@ -39,6 +39,7 @@ def load_font(taille=TEXT_SIZE):
     print("Aucune police TrueType trouvée. Utilisation de la police par défaut.")
     return ImageFont.load_default()
 
+"""
 def creeCadre(x,y,draw):
 	x0=0
 	x1=x
@@ -60,6 +61,33 @@ def creeCadre(x,y,draw):
 	# Dibuja una línea horizontal dentro del cuadrado
 	horizontal_y = (y0 + y1) / 2
 	draw.line([(x0, horizontal_y), (x1, horizontal_y)], fill="black", width=1)
+"""
+def creeCadre(x, y, draw, transparent=False):
+    x0 = 0
+    x1 = x
+    y0 = y - (y / 8)
+    y1 = y
+
+    # Definir el color de relleno
+    if transparent:
+        fill_color = (255, 255, 255, 0)  # Completamente transparente
+    else:
+        fill_color = (255, 255, 255, 255)  # Blanco opaco
+
+    # Dibuja el rectángulo
+    draw.rectangle([x0, y0, x1, y1], fill=fill_color, outline="black", width=2)
+
+    # Dibuja seis líneas verticales dentro del rectángulo
+    num_vertical_lines = 6
+    line_spacing = (x1 - x0) / (num_vertical_lines + 1)
+
+    for i in range(1, num_vertical_lines + 1):
+        x_line = x0 + i * line_spacing
+        draw.line([(x_line, y0), (x_line, y1)], fill="black", width=1)
+
+    # Dibuja una línea horizontal dentro del rectángulo
+    horizontal_y = (y0 + y1) / 2
+    draw.line([(x0, horizontal_y), (x1, horizontal_y)], fill="black", width=1)
 
 
 #Obtains arguments from the program execution
@@ -101,7 +129,6 @@ FreeMono.ttf             FreeSans.ttf             FreeSerif.ttf
 #font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
 font=load_font()
 
-
 #Image default Source
 imageFile = "F4LEC.jpg"
 
@@ -120,6 +147,9 @@ print('Debug Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL 
 #Resize image
 if (x!=width or y!=height) :	
 	img = img.resize((width, height), Image.Resampling.BICUBIC)
+	#Get size of image
+	x, y = img.size
+	print('Debug New Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
 	
 #Line Y of the text level
 y_text=y-(y/8)+(TEXT_SIZE/2)-4
@@ -127,7 +157,7 @@ y_text=y-(y/8)+(TEXT_SIZE/2)-4
 # Write text in image
 draw = ImageDraw.Draw(img)
 
-creeCadre(x,y,draw)
+creeCadre(x,y,draw,True)
 
 #Draw STATION 
 draw.text((12, y_text), "STATION " ,BLACK,font=font)
@@ -170,8 +200,9 @@ draw.text((520, y_text), rst ,BLACK,font=font)
 #Draw MODE
 draw.text((630, y_text), mode ,BLACK,font=font)
 
-
+#Drawing in img
 draw = ImageDraw.Draw(img)
-#img.show()
+
+img.show()
 # Save image
 img.save( "QSL_output.jpg")
