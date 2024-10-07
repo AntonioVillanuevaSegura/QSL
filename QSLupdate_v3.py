@@ -19,7 +19,7 @@ mode ="LSB"
 width=843
 height=537
 TEXT_SIZE=25
-print ("program use : python3 ", sys.argv[0], "STATION DATE UTC MHZ RST MODE ")
+
 
 
 def load_font(taille=TEXT_SIZE):
@@ -89,8 +89,12 @@ def creeCadre(x, y, draw, transparent=False):
     horizontal_y = (y0 + y1) / 2
     draw.line([(x0, horizontal_y), (x1, horizontal_y)], fill="black", width=1)
 
-
 #Obtains arguments from the program execution
+
+if (len(sys.argv) <7):
+	print ("Error number of arguments !")
+	print ("program use :", sys.argv[0], "STATION DATE UTC MHZ RST MODE ")
+	sys.exit()
 
 if len(sys.argv) >=2:
 	station=sys.argv[1]
