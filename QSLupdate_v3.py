@@ -144,52 +144,52 @@ def creeCadre(x, y, draw,color="black", transparent=False):
     if transparent:
         draw.bitmap((0, 0), overlay)
 
-def write_user_data(draw):
+def write_user_data(draw,color=BLACK):
 	#Line Y of the text level
 	x=width #default
 	y=height #default
 	y_text=y-(y/8)+(TEXT_SIZE/2)-4
 	
 	#Draw STATION 
-	draw.text((12, y_text), "STATION " ,BLACK,font=font)
+	draw.text((12, y_text), "STATION " ,color,font=font)
 
 	#Draw DATE
-	draw.text((122+30, y_text), "DATE" ,BLACK,font=font)
+	draw.text((122+30, y_text), "DATE" ,color,font=font)
 
 	#Draw HOUR
-	draw.text((260, y_text), "UTC" ,BLACK,font=font)
+	draw.text((260, y_text), "UTC" ,color,font=font)
 
 	#Draw Mhz
-	draw.text((380, y_text), "MHZ" ,BLACK,font=font)
+	draw.text((380, y_text), "MHZ" ,color,font=font)
 
 	#Draw RST
-	draw.text((520, y_text), "RST" ,BLACK,font=font)
+	draw.text((520, y_text), "RST" ,color,font=font)
 
 	#Draw MODE
-	draw.text((630, y_text), "MODE" ,BLACK,font=font)
+	draw.text((630, y_text), "MODE" ,color,font=font)
 
 	#Draw QSL 
-	draw.text((750, y_text), "QSL" ,BLACK,font=font)
+	draw.text((750, y_text), "QSL" ,color,font=font)
 
 
 	y_text = y_text+TEXT_SIZE
 	#Draw STATION 
-	draw.text((12, y_text), station ,BLACK,font=font)
+	draw.text((12, y_text), station ,color,font=font)
 
 	#Draw DATE
-	draw.text((122, y_text), date ,BLACK,font=font)
+	draw.text((122, y_text), date ,color,font=font)
 
 	#Draw HOUR
-	draw.text((260, y_text), utc ,BLACK,font=font)
+	draw.text((260, y_text), utc ,color,font=font)
 
 	#Draw Mhz
-	draw.text((380, y_text), mhz ,BLACK,font=font)
+	draw.text((380, y_text), mhz ,color,font=font)
 
 	#Draw RST
-	draw.text((520, y_text), rst ,BLACK,font=font)
+	draw.text((520, y_text), rst ,color,font=font)
 
 	#Draw MODE
-	draw.text((630, y_text), mode ,BLACK,font=font)
+	draw.text((630, y_text), mode ,color,font=font)
 
 def resize_image(x,y,img):
 	#Resize image
