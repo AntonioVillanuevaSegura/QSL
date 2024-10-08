@@ -14,6 +14,8 @@ utc="12:00"
 mhz="7.000"
 rst ="59"
 mode ="LSB"
+transparence =False
+source_image="F4LEC.jpg"
 
 #default QSL size x=843 , y= 537
 width=843
@@ -27,29 +29,44 @@ WHITE =(250,250,250)
 def read_arguments () :
 	"""Obtains arguments from the program execution"""
 
-	if (len(sys.argv) <6):
+	print ("Number args :" ,len(sys.argv))
+	
+	#print (sys.argv[0] ,sys.argv[5] )
+	if (len(sys.argv) <5):
 		print ("Error number of parameters , usage scheme")
-		print ( sys.argv[0], "STATION DATE UTC MHZ RST MODE ")
+		"""                      1      2    3   4   5   6  7 """
+		print ( sys.argv[0], "STATION DATE UTC MHZ RST MODE Transparence {True or False} {Base image of the qsl} ")
 		sys.exit()
 
-	if len(sys.argv) >=2:
+	if len(sys.argv) >= 2:
 		station=sys.argv[1]
 		
-	if len(sys.argv) >=3:
+	if len(sys.argv) >= 3:
 		date=sys.argv[2]
 		
-	if len(sys.argv) >=4:
+	if len(sys.argv) >= 4:
 		utc=sys.argv[3]
 		
-	if len(sys.argv) >=5:
+	if len(sys.argv) >= 5:
 		mhz=sys.argv[4]
 		
-	if len(sys.argv) >=6:
+	if len(sys.argv) >= 6:
 		rst=sys.argv[5]	
 		
-	if len(sys.argv) >=7:
+	if len(sys.argv) >= 7:
 		mode=sys.argv[6]
-	
+		
+	if len(sys.argv) >= 8:
+		tmp = (sys.argv[7]).lower()
+		if "true" in tmp:
+			print ("Transparence on")
+			transparence =True 
+		else:
+			 print ("Transparence off")
+			 
+	if len(sys.argv) >= 9:	
+		source_image=sys.argv[8]		 
+		
 def read_image(fichier="F4LEC.jpg"):
 	"""Read base image  """
 	#Image default Source
@@ -173,33 +190,34 @@ def resize_image(x,y,img):
 		#Get size of image
 		x, y = img.size
 		print('Debug New Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
-				
-#Obtains arguments from the program execution
-read_arguments() 
 
-#Text Font
-#font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
-font=load_font()
+if __name__ == '__main__':				
+	#Obtains arguments from the program execution
+	read_arguments() 
 
-img=read_image () #Read base image
+	sys.exit(0)
+	#Text Font
+	#font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
+	font=load_font()
 
-#Get size of image
-x, y = img.size
-print('Debug Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
+	img=read_image () #Read base image
 
-resize_image(x,y,img)
-#Resize image
+	#Get size of image
+	x, y = img.size
+	print('Debug Org. Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
 
-# Write text in image
-draw = ImageDraw.Draw(img)
-creeCadre(x,y,draw,True)
-write_user_data (draw)
+	resize_image(x,y,img)	#Resize image
 
-#Drawing in img
-draw = ImageDraw.Draw(img)
+	# Write text in image
+	draw = ImageDraw.Draw(img)
+	creeCadre(x,y,draw,transparence)
+	write_user_data (draw)
 
-#Show image
-img.show()
+	#Drawing in img
+	draw = ImageDraw.Draw(img)
 
-# Save image
-img.save( "QSL_output.jpg")
+	#Show image
+	img.show()
+
+	# Save image
+	img.save( "QSL_output.jpg")
