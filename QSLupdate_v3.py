@@ -146,6 +146,8 @@ def creeCadre(x, y, draw, transparent=False):
 
 def write_user_data(draw):
 	#Line Y of the text level
+	x=width #default
+	y=height #default
 	y_text=y-(y/8)+(TEXT_SIZE/2)-4
 	
 	#Draw STATION 
@@ -191,37 +193,43 @@ def write_user_data(draw):
 
 def resize_image(x,y,img):
 	#Resize image
+	print('Debug Org Image Size x : ',x,', y:',y) #Analyze the size of the out QSL  p.e x=843 , y= 537
 	if (x!=width or y!=height) :	
 		img = img.resize((width, height), Image.Resampling.BICUBIC)
 		#Get size of image
 		x, y = img.size
-		print('Debug New Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
+		print('Debug New Image Size x : ',x,', y:',y) #Analyze the size of the out QSL  p.e x=843 , y= 537
+	return img
 
 if __name__ == '__main__':				
 	#Obtains arguments from the program execution
 	read_arguments() 
 
 	#Text Font
-	#font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
 	font=load_font()
 
-	print ("Debug source ",source_image)
+
 	img=read_image (source_image) #Read base image
 
 	#Get size of image
 	x, y = img.size
-	#print('Debug Org. Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
 
-	resize_image(x,y,img)	#Resize image
+	img=resize_image(x,y,img)	#Resize image
 
-	# Write text in image
+	# Creates objtect draw   
 	draw = ImageDraw.Draw(img)
-	creeCadre(x,y,draw,transparence)
+	
+	#Cadre
+	creeCadre(width,height,draw,transparence)
+	
+	#User data QSL
 	write_user_data (draw)
 
 	#Drawing in img
 	draw = ImageDraw.Draw(img)
-
+	
+	#img = ImageDraw.Draw(img)
+	
 	#Show image
 	img.show()
 
