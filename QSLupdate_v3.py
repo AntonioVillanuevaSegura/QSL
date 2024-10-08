@@ -50,10 +50,10 @@ def read_arguments () :
 	if len(sys.argv) >=7:
 		mode=sys.argv[6]
 	
-def read_image():
+def read_image(fichier="F4LEC.jpg"):
 	"""Read base image  """
 	#Image default Source
-	imageFile = "F4LEC.jpg"
+	imageFile = fichier
 
 	#Try open image
 	try:
@@ -65,7 +65,14 @@ def read_image():
 	return img
 	
 def load_font(taille=TEXT_SIZE):
-	"""text font """
+	"""text font 
+	/usr/share/fonts/truetype/freefont/
+	FreeMonoBoldOblique.ttf  FreeSansBoldOblique.ttf  FreeSerifBoldItalic.ttf
+	FreeMonoBold.ttf         FreeSansBold.ttf         FreeSerifBold.ttf
+	FreeMonoOblique.ttf      FreeSansOblique.ttf      FreeSerifItalic.ttf
+	FreeMono.ttf             FreeSans.ttf             FreeSerif.ttf
+	"""
+	
 	fonts = [
 		"/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf",
 		"/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
@@ -166,29 +173,19 @@ def resize_image(x,y,img):
 		#Get size of image
 		x, y = img.size
 		print('Debug New Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
-		
+				
 #Obtains arguments from the program execution
 read_arguments() 
 
-"""
-/usr/share/fonts/truetype/freefont/
-FreeMonoBoldOblique.ttf  FreeSansBoldOblique.ttf  FreeSerifBoldItalic.ttf
-FreeMonoBold.ttf         FreeSansBold.ttf         FreeSerifBold.ttf
-FreeMonoOblique.ttf      FreeSansOblique.ttf      FreeSerifItalic.ttf
-FreeMono.ttf             FreeSans.ttf             FreeSerif.ttf
-
-"""
 #Text Font
 #font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
 font=load_font()
-
 
 img=read_image () #Read base image
 
 #Get size of image
 x, y = img.size
 print('Debug Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
-
 
 resize_image(x,y,img)
 #Resize image
@@ -201,6 +198,8 @@ write_user_data (draw)
 #Drawing in img
 draw = ImageDraw.Draw(img)
 
+#Show image
 img.show()
+
 # Save image
 img.save( "QSL_output.jpg")
