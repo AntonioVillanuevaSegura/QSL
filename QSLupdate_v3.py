@@ -112,7 +112,7 @@ def load_font(taille=TEXT_SIZE):
 	print("Aucune police TrueType trouvée. Utilisation de la police par défaut.")
 	return ImageFont.load_default()
 
-def creeCadre(x, y, draw, transparent=False):
+def creeCadre(x, y, draw,color="black", transparent=False):
     x0 = 0
     x1 = x
     y0 = y - (y / 8)
@@ -126,7 +126,7 @@ def creeCadre(x, y, draw, transparent=False):
         d = draw
 
     # Dibuja el rectángulo
-    d.rectangle([x0, y0, x1, y1], fill=(255, 255, 255, 0) if transparent else (255, 255, 255, 255), outline="black", width=2)
+    d.rectangle([x0, y0, x1, y1], fill=(255, 255, 255, 0) if transparent else (255, 255, 255, 255), outline=color, width=2)
 
     # Dibuja seis líneas verticales dentro del rectángulo
     num_vertical_lines = 6
@@ -134,11 +134,11 @@ def creeCadre(x, y, draw, transparent=False):
 
     for i in range(1, num_vertical_lines + 1):
         x_line = x0 + i * line_spacing
-        d.line([(x_line, y0), (x_line, y1)], fill="black", width=1)
+        d.line([(x_line, y0), (x_line, y1)], fill=color, width=1)
 
     # Dibuja una línea horizontal dentro del rectángulo
     horizontal_y = (y0 + y1) / 2
-    d.line([(x0, horizontal_y), (x1, horizontal_y)], fill="black", width=1)
+    d.line([(x0, horizontal_y), (x1, horizontal_y)], fill=color, width=1)
 
     # Si es transparente, combina la superposición con la imagen original
     if transparent:
@@ -220,7 +220,7 @@ if __name__ == '__main__':
 	draw = ImageDraw.Draw(img)
 	
 	#Cadre
-	creeCadre(width,height,draw,transparence)
+	creeCadre(width,height,draw,"black",transparence)
 	
 	#User data QSL
 	write_user_data (draw)
