@@ -28,6 +28,7 @@ WHITE =(250,250,250)
 
 def read_arguments () :
 	"""Obtains arguments from the program execution"""
+	global station,date,utc,mhz,rst,mode,transparence,source_image
 
 	print ("Number args :" ,len(sys.argv))
 	
@@ -68,10 +69,12 @@ def read_arguments () :
 			 print ("Transparence off")
 	""" Name of the QSL base photo file """		 
 	if len(sys.argv) >= 9:	
-		source_image=sys.argv[8]		 
+		source_image=sys.argv[8]	
+		print ("Debug in read args ",source_image)	 
 		
-def read_image(fichier="F4LEC.jpg"):
+def read_image(fichier):
 	"""Read base image  """
+	print ("Debug base file image :" ,fichier)
 	#Image default Source
 	imageFile = fichier
 
@@ -198,16 +201,16 @@ if __name__ == '__main__':
 	#Obtains arguments from the program execution
 	read_arguments() 
 
-	#sys.exit(0)
 	#Text Font
 	#font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
 	font=load_font()
 
-	img=read_image () #Read base image
+	print ("Debug source ",source_image)
+	img=read_image (source_image) #Read base image
 
 	#Get size of image
 	x, y = img.size
-	print('Debug Org. Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
+	#print('Debug Org. Image Size x : ',x,', y:',y) #Analyze the size of the incoming QSL  p.e x=843 , y= 537
 
 	resize_image(x,y,img)	#Resize image
 
