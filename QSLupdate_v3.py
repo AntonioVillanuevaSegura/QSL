@@ -40,7 +40,7 @@ def read_arguments () :
 
 	if len(sys.argv) >= 2:
 		station=sys.argv[1]
-		
+	
 	if len(sys.argv) >= 3:
 		date=sys.argv[2]
 		
@@ -49,13 +49,16 @@ def read_arguments () :
 		
 	if len(sys.argv) >= 5:
 		mhz=sys.argv[4]
-		
+	
+	""" RST 59"""
 	if len(sys.argv) >= 6:
 		rst=sys.argv[5]	
 		
+	""" mode usb lsb am fm """
 	if len(sys.argv) >= 7:
 		mode=sys.argv[6]
-		
+	
+	""" Transparence True or False"""	
 	if len(sys.argv) >= 8:
 		tmp = (sys.argv[7]).lower()
 		if "true" in tmp:
@@ -63,7 +66,7 @@ def read_arguments () :
 			transparence =True 
 		else:
 			 print ("Transparence off")
-			 
+	""" Name of the QSL base photo file """		 
 	if len(sys.argv) >= 9:	
 		source_image=sys.argv[8]		 
 		
@@ -195,7 +198,7 @@ if __name__ == '__main__':
 	#Obtains arguments from the program execution
 	read_arguments() 
 
-	sys.exit(0)
+	#sys.exit(0)
 	#Text Font
 	#font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf", TEXT_SIZE, encoding="unic")
 	font=load_font()
