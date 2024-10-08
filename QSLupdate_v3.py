@@ -208,7 +208,6 @@ if __name__ == '__main__':
 	#Text Font
 	font=load_font()
 
-
 	img=read_image (source_image) #Read base image
 
 	#Get size of image
