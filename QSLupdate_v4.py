@@ -10,6 +10,10 @@ from PIL import ImageFont ,Image ,ImageDraw
 import tkinter as tk #Gui
 from tkinter import ttk
 from tktooltip import ToolTip #infobulles
+from tkinter import filedialog
+
+import os
+import sys
 
 #Default parameters
 INDICATIVE ="F4LEC"
@@ -33,13 +37,14 @@ WHITE =(250,250,250)
 class InterfaceGraphique(tk.Tk):
 	def __init__(self):
 		super().__init__()
-
+		self.title('QSL F4LEC')
+		self.resizable(False, False)		
 		self.creeGui() #Cree GUI tkinter
 	def creeGui(self):
 		""" Crée l'interface utilisateur avec tkinter"""
 		#tkinter window
-		self.title('QSL F4LEC')
-		self.resizable( False, False )	
+		#self.root.title('QSL F4LEC')
+		#self.root.resizable( False, False )	
 		
 		#Frames
 		self.FrameSup=tk.Frame(self, borderwidth=2)	
@@ -80,9 +85,38 @@ class InterfaceGraphique(tk.Tk):
 		self.Mode.grid(row=0,column=6)	
 		
 		#Frame Med
-		self.Transparence=tk.Entry(self.FrameMed,textvariable=self.sTransparence,justify='center',bg="white")
-		self.Transparence.grid(row=0,column=6)		
+		self.SourceImage=tk.Entry(self.FrameMed,textvariable=self.sSource_image,justify='center',bg="white")
+		self.SourceImage.grid(row=0,column=1)	
 		
+		# Vinculo FocusIn -> método browse_folder
+		self.SourceImage.bind("<FocusIn>", self.browse_folder)		
+		
+		self.Transparence=tk.Entry(self.FrameMed,textvariable=self.sTransparence,justify='center',bg="white")
+		self.Transparence.grid(row=0,column=2)	
+				
+		
+	def browse_folder(self, event=None):
+		filetypes = (
+			('JPEG files', '*.jpg'),
+			('PNG files', '*.png'),
+			('GIF files', '*.gif'),
+			('All image files', ('*.jpg', '*.jpeg', '*.png', '*.gif', '*.bmp'))
+		)
+		
+		initial_dir = os.path.dirname(os.path.abspath(__file__))
+		
+		file_path = filedialog.askopenfilename(
+			title='Select image',
+			initialdir=initial_dir,
+			filetypes=filetypes
+		)
+		
+		if file_path:
+			self.sSource_image.set(file_path)
+			self.focus_force()  # Devuelve el foco a la ventana
+			#self.display_image(file_path)
+			
+				
 						
 		
 		
