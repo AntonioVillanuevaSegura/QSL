@@ -113,7 +113,8 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.set_mhz (self.sMhz.get())
 		self.qsl.set_rst (self.sRst.get())
 		self.qsl.set_mode (self.sMode.get())
-		self.qsl.set_station (self.sIndicative.get())												
+		self.qsl.set_station (self.sIndicative.get())
+		self.qsl.set_source_image (self.sSource_image.get() )												
 		self.qsl.run()
 				
 	def browser_folder(self, event=None):
@@ -184,7 +185,10 @@ class QSL():
 		
 	def set_mode (self,data):
 		self.mode=data											
-	 			
+	 
+	def set_source_image (self,data):
+		self.source_image =data
+		
 	def read_image(self,fichier):
 		"""Read base image  """
 		print ("Debug base file image :" ,fichier)
