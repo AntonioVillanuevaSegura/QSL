@@ -38,7 +38,8 @@ class InterfaceGraphique(tk.Tk):
 	def __init__(self):
 		super().__init__()
 		self.title('QSL F4LEC')
-		self.resizable(False, False)		
+		self.resizable(False, False)	
+		self.dialog_open = False	
 		self.creeGui() #Cree GUI tkinter
 	def creeGui(self):
 		""" Crée l'interface utilisateur avec tkinter"""
@@ -88,14 +89,17 @@ class InterfaceGraphique(tk.Tk):
 		self.SourceImage=tk.Entry(self.FrameMed,textvariable=self.sSource_image,justify='center',bg="white")
 		self.SourceImage.grid(row=0,column=1)	
 		
-		# Vinculo FocusIn -> método browse_folder
-		self.SourceImage.bind("<FocusIn>", self.browse_folder)		
+		# Vinculo  -> método browse_folder
+		#self.SourceImage.bind("<FocusIn>", self.browser_folder)		
+		self.SourceImage.bind("<Button-1>", self.browser_folder)	
 		
 		self.Transparence=tk.Entry(self.FrameMed,textvariable=self.sTransparence,justify='center',bg="white")
 		self.Transparence.grid(row=0,column=2)	
 				
 		
-	def browse_folder(self, event=None):
+	def browser_folder(self, event=None):
+		if self.dialog_open:
+			return
 		filetypes = (
 			('JPEG files', '*.jpg'),
 			('PNG files', '*.png'),
@@ -105,16 +109,26 @@ class InterfaceGraphique(tk.Tk):
 		
 		initial_dir = os.path.dirname(os.path.abspath(__file__))
 		
-		file_path = filedialog.askopenfilename(
-			title='Select image',
-			initialdir=initial_dir,
-			filetypes=filetypes
-		)
-		
+		try:
+			file_path = filedialog.askopenfilename(
+				title='Select image',
+				initialdir=initial_dir,
+				filetypes=filetypes,
+				parent=self
+			)
+		finally:
+			self.dialog_open = False			
+			self.focus_force()
+			self.lift()
+
 		if file_path:
 			self.sSource_image.set(file_path)
-			self.focus_force()  # Devuelve el foco a la ventana
-			#self.display_image(file_path)
+			self.SourceImage.update()
+			print(f"Archivo seleccionado: {file_path}")
+		else:
+			print ("Cancel")
+			
+		
 			
 				
 						
