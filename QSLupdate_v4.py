@@ -107,10 +107,15 @@ class InterfaceGraphique(tk.Tk):
 		
 	def CreateQSL(self):
 		
-		self.qsl.set_station =self.sIndicative.get()
+		self.qsl.set_station (self.sIndicative.get())
+		self.qsl.set_date (self.sDate.get())
+		self.qsl.set_utc (self.sUtc.get())
+		self.qsl.set_mhz (self.sMhz.get())
+		self.qsl.set_rst (self.sRst.get())
+		self.qsl.set_mode (self.sMode.get())
+		self.qsl.set_station (self.sIndicative.get())												
 		self.qsl.run()
 				
-		
 	def browser_folder(self, event=None):
 		if self.dialog_open:
 			return
@@ -144,13 +149,13 @@ class InterfaceGraphique(tk.Tk):
 				
 class QSL():
 	def __init__(self):		
-		self.station =INDICATIVE
-		self.date=DATE
-		self.utc=UTC
-		self.mhz=MHZ
-		self.rst=RST
-		self.mode=MODE
-		self.transparence=TRANSPARENCE
+		self.station =None
+		self.date=None
+		self.utc=None
+		self.mhz=None
+		self.rst=None
+		self.mode=None
+		self.transparence=False
 		self.source_image=SOURCE_IMAGE
 		self.image=None
 		self.draw=None
@@ -161,8 +166,8 @@ class QSL():
 		self.HEIGHT=537
 		self.TEXT_SIZE=25
 		
-
 	def set_station(self,data):
+		print ("DEBUG ----------> ",data)
 		self.station=data
 		
 	def set_date (self,data):
@@ -314,7 +319,7 @@ class QSL():
 		#read_arguments() 
 		
 		print ("Create QSL")
-
+		print (" sta :" ,self.station)
 		#Text Font
 		self.font=self.load_font()
 
