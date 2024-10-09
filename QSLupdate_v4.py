@@ -65,7 +65,7 @@ class InterfaceGraphique(tk.Tk):
 		self.sRst=tk.StringVar(self.FrameSup,value =RST)
 		self.sMode=tk.StringVar(self.FrameSup,value =MODE)	
 		
-		self.sTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
+		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
 		self.sSource_image=tk.StringVar(self.FrameSup,value =SOURCE_IMAGE)
 		
 		#data entries
@@ -96,14 +96,18 @@ class InterfaceGraphique(tk.Tk):
 		#self.SourceImage.bind("<FocusIn>", self.browser_folder)		
 		self.SourceImage.bind("<Button-1>", self.browser_folder)	
 		
-		self.Transparence=tk.Entry(self.FrameMed,textvariable=self.sTransparence,justify='center',bg="white")
-		self.Transparence.grid(row=0,column=2)
-		
+		"""
+		self.TransparenceButton = tk.Button(self.FrameMed,text="Transparence",command=self.toggle_transparence,
+		bg="white")
+		self.TransparenceButton.grid(row=0,column=2)
+		"""
+		self.TransparenceButton=tk.Checkbutton(self.FrameMed, text='Transparence',variable=self.bTransparence)
+		self.TransparenceButton.grid(row=0,column=2)
 		#Frame Buttons	
 		
 		self.CreateQSL=tk.Button(self.FrameButtons,text="Create", bg="red",
 		command=self.CreateQSL)	
-		self.CreateQSL.grid(row=0 ,column=1)
+		self.CreateQSL.grid(row=0 ,column=2)
 		
 	def CreateQSL(self):
 		
@@ -114,6 +118,7 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.set_rst (self.sRst.get())
 		self.qsl.set_mode (self.sMode.get())
 		self.qsl.set_station (self.sIndicative.get())
+		self.qsl.set_transparence(self.bTransparence.get())
 		self.qsl.set_source_image (self.sSource_image.get() )												
 		self.qsl.run()
 				
@@ -147,6 +152,8 @@ class InterfaceGraphique(tk.Tk):
 			print(f"Selected file: {file_path}")
 		else:
 			print ("Cancel")
+				
+			
 				
 class QSL():
 	def __init__(self):		
@@ -188,6 +195,10 @@ class QSL():
 	 
 	def set_source_image (self,data):
 		self.source_image =data
+		
+	def set_transparence (self,data):
+		self.transparence =data		
+		print ("Trans : ",self.transparence)
 		
 	def read_image(self,fichier):
 		"""Read base image  """
@@ -320,10 +331,6 @@ class QSL():
 	
 	def run (self):
 		#Obtains arguments from the program execution
-		#read_arguments() 
-		
-		print ("Create QSL")
-		print (" sta :" ,self.station)
 		#Text Font
 		self.font=self.load_font()
 
