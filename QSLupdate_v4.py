@@ -2,6 +2,8 @@
 Antonio Villanueva Segura F4LEC
 Program to edit a QSL the input arguments are as follows
 STATION DATE UTC MHZ RST MOD
+
+pip install --upgrade Pillow
 """
 import sys #Arguments
 import PIL
@@ -323,6 +325,11 @@ class QSL():
 		#Resize image
 		print('Debug Org Image Size x : ',x,', y:',y) #Analyze the size of the out QSL  p.e x=843 , y= 537
 		if (x!=self.WIDTH or y!=self.HEIGHT) :	
+			"""
+			pip install --upgrade Pillow
+			PIL.Image.Resampling.BICUBIC
+			PIL.Image.BICUBIC  <---version ancienne PIL
+			"""
 			img = img.resize((self.WIDTH, self.HEIGHT), Image.Resampling.BICUBIC)
 			#Get size of image
 			x, y = img.size
@@ -359,7 +366,8 @@ class QSL():
 		self.img.show()
 
 		# Save image
-		self.img.save( "QSL_output.jpg")
+		#self.img.save( "QSL_output.jpg")
+		self.img.save( self.station+".jpg")
 	
 if __name__ == "__main__":
   app = InterfaceGraphique() #Instance InterfaceGraphique tkinter
