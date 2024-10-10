@@ -40,7 +40,7 @@ WHITE =(250,250,250)
 class InterfaceGraphique(tk.Tk):
 	def __init__(self):
 		super().__init__()
-		self.title('QSL F4LEC')
+		self.title('QSL maker F4LEC')
 		self.resizable(False, False)	
 		self.dialog_open = False	
 		
@@ -50,6 +50,10 @@ class InterfaceGraphique(tk.Tk):
 		""" Crée l'interface utilisateur avec tkinter"""
 		
 		#Frames
+		
+		self.FrameMyStation=tk.Frame(self, borderwidth=2)	
+		self.FrameMyStation.pack()
+		
 		self.FrameSup=tk.Frame(self, borderwidth=2)	
 		self.FrameSup.pack()
 		
@@ -60,6 +64,12 @@ class InterfaceGraphique(tk.Tk):
 		self.FrameButtons.pack()			
 		
 		#Variables 
+		
+		self.sMyIndicative=tk.StringVar(self.FrameMyStation,value =INDICATIVE)
+		self.iPosX=	tk.IntVar(self.FrameMyStation,value =1)	
+		self.iPosY=	tk.IntVar(self.FrameMyStation,value =1)	
+		self.iSizeText=	tk.IntVar(self.FrameMyStation,value =TEXT_SIZE)	
+				
 		self.sIndicative=tk.StringVar(self.FrameSup,value =INDICATIVE)	
 		self.sDate=tk.StringVar(self.FrameSup,value =DATE)	
 		self.sUtc=tk.StringVar(self.FrameSup,value =UTC)
@@ -72,23 +82,37 @@ class InterfaceGraphique(tk.Tk):
 		
 		#data entries
 		#Frame Sup
+		
+		self.MyIndicative=tk.Entry(self.FrameMyStation,textvariable=self.sMyIndicative,justify='center',bg="yellow")
+		self.MyIndicative.grid(row=0,column=1)		
+		
+		self.MyPosX=tk.Entry(self.FrameMyStation,textvariable=self.iPosX,justify='center',bg="yellow")
+		self.MyPosX.grid(row=0,column=2)	
+		
+		self.MyPosY=tk.Entry(self.FrameMyStation,textvariable=self.iPosY,justify='center',bg="yellow")
+		self.MyPosY.grid(row=0,column=3)	
+		
+		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow")
+		self.MySizeText.grid(row=0,column=4)					
+		
+		
 		self.Indicative=tk.Entry(self.FrameSup,textvariable=self.sIndicative,justify='center',bg="white")
-		self.Indicative.grid(row=0,column=1)
+		self.Indicative.grid(row=0,column=3)
 		
 		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white")
-		self.Date.grid(row=0,column=2)	
+		self.Date.grid(row=0,column=4)	
 		
 		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white")
-		self.Utc.grid(row=0,column=3)	
+		self.Utc.grid(row=0,column=5)	
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
-		self.Mhz.grid(row=0,column=4)
+		self.Mhz.grid(row=0,column=5)
 		
 		self.Rst=tk.Entry(self.FrameSup,textvariable=self.sRst,justify='center',bg="white")
-		self.Rst.grid(row=0,column=5)	
+		self.Rst.grid(row=0,column=6)	
 		
 		self.Mode=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white")
-		self.Mode.grid(row=0,column=6)	
+		self.Mode.grid(row=0,column=7)	
 		
 		#Frame Med
 		self.SourceImage=tk.Entry(self.FrameMed,textvariable=self.sSource_image,justify='center',bg="white")
@@ -112,6 +136,13 @@ class InterfaceGraphique(tk.Tk):
 		self.CreateQSL.grid(row=0 ,column=2)
 		
 	def CreateQSL(self):
+
+		
+		self.qsl.set_mystation (self.sMyIndicative.get())
+		self.qsl.set_Xpos (self.iPosX.get())
+		self.qsl.set_Ypos (self.iPosY.get())	
+		self.qsl.set_SizeText (self.iSizeText.get())			
+		
 		
 		self.qsl.set_station (self.sIndicative.get())
 		self.qsl.set_date (self.sDate.get())
@@ -159,6 +190,11 @@ class InterfaceGraphique(tk.Tk):
 				
 class QSL():
 	def __init__(self):		
+		self.mystation=None
+		self.myXpos=None
+		self.myYpos=None
+		self.MySizeText=None
+		
 		self.station =None
 		self.date=None
 		self.utc=None
@@ -175,9 +211,20 @@ class QSL():
 		self.WIDTH=843
 		self.HEIGHT=537
 		self.TEXT_SIZE=25
+
+	def set_mystation(self,data):
+		self.mystation=data
+		
+	def set_Xpos(self,data):
+		self.myXpos=data	
+		
+	def set_Ypos(self,data):
+		self.myYpos=data	
+		
+	def set_SizeText(self,data):
+		self.MySizeText=data					
 		
 	def set_station(self,data):
-		print ("DEBUG ----------> ",data)
 		self.station=data
 		
 	def set_date (self,data):
@@ -279,6 +326,9 @@ class QSL():
 		x=self.WIDTH #default
 		y=self.HEIGHT #default
 		y_text=y-(y/8)+(TEXT_SIZE/2)-4
+		
+		#Draw MyStation
+		draw.text((12, 10), self.mystation ,color,font=self.font)
 		
 		#Draw STATION 
 		draw.text((12, y_text), "STATION " ,color,font=self.font)
