@@ -26,12 +26,13 @@ MHZ="7.000"
 RST ="59"
 MODE ="LSB"
 TRANSPARENCE =False
-SOURCE_IMAGE="F4LEC.jpg"
+SOURCE_IMAGE="a.jpg"
 
 #default QSL size x=843 , y= 537
 WIDTH=843
 HEIGHT=537
 TEXT_SIZE=25
+MY_TEXT_SIZE=80
 
 #Text Color 
 BLACK = (0,0,0)
@@ -68,7 +69,7 @@ class InterfaceGraphique(tk.Tk):
 		self.sMyIndicative=tk.StringVar(self.FrameMyStation,value =INDICATIVE)
 		self.iPosX=	tk.IntVar(self.FrameMyStation,value =1)	
 		self.iPosY=	tk.IntVar(self.FrameMyStation,value =1)	
-		self.iSizeText=	tk.IntVar(self.FrameMyStation,value =TEXT_SIZE)	
+		self.iSizeText=	tk.IntVar(self.FrameMyStation,value =MY_TEXT_SIZE)	
 				
 		self.sIndicative=tk.StringVar(self.FrameSup,value =INDICATIVE)	
 		self.sDate=tk.StringVar(self.FrameSup,value =DATE)	
@@ -81,38 +82,75 @@ class InterfaceGraphique(tk.Tk):
 		self.sSource_image=tk.StringVar(self.FrameSup,value =SOURCE_IMAGE)
 		
 		#data entries
-		#Frame Sup
+		#Frame MyIndicative
+		
+		labelMyCallSign = tk.Label(self.FrameMyStation, text="My callsign")
+		labelMyCallSign.grid(row=0, column=1, sticky="e", padx=5, pady=5)
 		
 		self.MyIndicative=tk.Entry(self.FrameMyStation,textvariable=self.sMyIndicative,justify='center',bg="yellow")
-		self.MyIndicative.grid(row=0,column=1)		
+		self.MyIndicative.grid(row=0,column=2)		
+		
+		labelX = tk.Label(self.FrameMyStation, text="X")
+		labelX.grid(row=0, column=3, sticky="e", padx=5, pady=5)		
 		
 		self.MyPosX=tk.Entry(self.FrameMyStation,textvariable=self.iPosX,justify='center',bg="yellow")
-		self.MyPosX.grid(row=0,column=2)	
+		self.MyPosX.grid(row=0,column=4)	
+		
+		
+		labelY = tk.Label(self.FrameMyStation, text="Y")
+		labelY.grid(row=0, column=5, sticky="e", padx=5, pady=5)
 		
 		self.MyPosY=tk.Entry(self.FrameMyStation,textvariable=self.iPosY,justify='center',bg="yellow")
-		self.MyPosY.grid(row=0,column=3)	
+		self.MyPosY.grid(row=0,column=6)	
+		
+		labelY = tk.Label(self.FrameMyStation, text="SIZE")
+		labelY.grid(row=0, column=7, sticky="e", padx=5, pady=5)
 		
 		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow")
-		self.MySizeText.grid(row=0,column=4)					
+		self.MySizeText.grid(row=0,column=8)					
 		
+		
+		#Frame Sup
+		#Labels 
+		labelIndicative = tk.Label(self.FrameSup, text="indicative", width=25, anchor="center")
+		labelIndicative.grid(row=0, column=0, sticky="e", padx=5, pady=5)
+		
+		labelDate = tk.Label(self.FrameSup, text="Date", width=25, anchor="center")
+		labelDate.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+		
+		labelUtc = tk.Label(self.FrameSup, text="UTC", width=25, anchor="center")
+		labelUtc.grid(row=0, column=2, sticky="e", padx=5, pady=5)
+		
+		labelMhz = tk.Label(self.FrameSup, text="Mhz", width=25, anchor="center")
+		labelMhz.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		
+		labelRst = tk.Label(self.FrameSup, text="RST", width=25, anchor="center")
+		labelRst.grid(row=0, column=4, sticky="e", padx=5, pady=5)
+		
+		labelMode = tk.Label(self.FrameSup, text="Mode", width=25, anchor="center")
+		labelMode.grid(row=0, column=5, sticky="e", padx=5, pady=5)		
+		
+
+		
+		#Entries
 		
 		self.Indicative=tk.Entry(self.FrameSup,textvariable=self.sIndicative,justify='center',bg="white")
-		self.Indicative.grid(row=0,column=3)
+		self.Indicative.grid(row=1,column=0)		
 		
 		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white")
-		self.Date.grid(row=0,column=4)	
+		self.Date.grid(row=1,column=1)	
 		
 		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white")
-		self.Utc.grid(row=0,column=5)	
+		self.Utc.grid(row=1,column=2)	
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
-		self.Mhz.grid(row=0,column=5)
+		self.Mhz.grid(row=1,column=3)
 		
 		self.Rst=tk.Entry(self.FrameSup,textvariable=self.sRst,justify='center',bg="white")
-		self.Rst.grid(row=0,column=6)	
+		self.Rst.grid(row=1,column=4)	
 		
 		self.Mode=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white")
-		self.Mode.grid(row=0,column=7)	
+		self.Mode.grid(row=1,column=5)	
 		
 		#Frame Med
 		self.SourceImage=tk.Entry(self.FrameMed,textvariable=self.sSource_image,justify='center',bg="white")
@@ -186,8 +224,7 @@ class InterfaceGraphique(tk.Tk):
 		else:
 			print ("Cancel")
 				
-			
-				
+							
 class QSL():
 	def __init__(self):		
 		self.mystation=None
@@ -321,15 +358,13 @@ class QSL():
 		if transparent:
 			draw.bitmap((0, 0), overlay)
 
-	def write_user_data(self,draw,color=BLACK):
+	def write_user_data(self,draw,myX,myY,mySizeText,color=BLACK):
 		#Line Y of the text level
 		x=self.WIDTH #default
 		y=self.HEIGHT #default
 		y_text=y-(y/8)+(TEXT_SIZE/2)-4
 		
-		#Draw MyStation
-		draw.text((12, 10), self.mystation ,color,font=self.font)
-		
+
 		#Draw STATION 
 		draw.text((12, y_text), "STATION " ,color,font=self.font)
 
@@ -370,6 +405,21 @@ class QSL():
 
 		#Draw MODE
 		draw.text((630, y_text), self.mode ,color,font=self.font)
+		
+		
+		"""
+		Maximum size control for the position and size of my text 
+		"""
+		if myX>self.WIDTH:
+			myX=( self.WIDTH - mySizeText*3 )
+		
+		if myY >self.HEIGHT:
+			myY= ( self.HEIGHT -mySizeText  -10 )
+		
+		#Draw MyStation
+		self.font=self.load_font(mySizeText)
+		draw.text((myX, myY), self.mystation ,color,font=self.font)		
+		
 
 	def resize_image(self,x,y,img):
 		#Resize image
@@ -404,13 +454,12 @@ class QSL():
 		#Cadre
 		self.creeCadre(self.WIDTH ,self.HEIGHT ,self.draw,"black",self.transparence)
 
+
 		#User data QSL
-		self.write_user_data (self.draw)
+		self.write_user_data (self.draw,self.myXpos,self.myYpos,self.MySizeText)
 
 		#Drawing in img
 		draw = ImageDraw.Draw(self.img)
-
-		#img = ImageDraw.Draw(img)
 
 		#Show image
 		self.img.show()
