@@ -54,13 +54,16 @@ class InterfaceGraphique(tk.Tk):
 		self.resizable(False, False)	
 		self.dialog_open = False	
 		
+		#QSL class instance
 		self.qsl =QSL()
-		self.creeGui() #Cree GUI tkinter
+		
+		#GUI tkinter
+		self.creeGui() 
+		
 	def creeGui(self):
 		""" Crée l'interface utilisateur avec tkinter"""
 		
-		#Frames
-		
+		#Frames	,Frames to place the different objects	
 		self.FrameMyStation=tk.Frame(self, borderwidth=2)	
 		self.FrameMyStation.pack()
 		
@@ -73,8 +76,7 @@ class InterfaceGraphique(tk.Tk):
 		self.FrameButtons=tk.Frame(self, borderwidth=2)	
 		self.FrameButtons.pack()			
 		
-		#Variables 
-		
+		#Variables 		
 		self.sMyIndicative=tk.StringVar(self.FrameMyStation,value =INDICATIVE)
 		self.iPosX=	tk.IntVar(self.FrameMyStation,value =1)	
 		self.iPosY=	tk.IntVar(self.FrameMyStation,value =1)	
@@ -90,9 +92,7 @@ class InterfaceGraphique(tk.Tk):
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
 		self.sSource_image=tk.StringVar(self.FrameSup,value =SOURCE_IMAGE)
 		
-		#data entries
-		#Frame MyIndicative
-		
+		#Frame FrameMyStation data entries		
 		labelMyCallSign = tk.Label(self.FrameMyStation, text="My callsign")
 		labelMyCallSign.grid(row=0, column=1, sticky="e", padx=5, pady=5)
 		
@@ -119,8 +119,7 @@ class InterfaceGraphique(tk.Tk):
 		self.MySizeText.grid(row=0,column=8)					
 		
 		
-		#Frame Sup
-		#Labels 
+		#Frame Sup Labels 
 		labelIndicative = tk.Label(self.FrameSup, text="indicative", width=25, anchor="center")
 		labelIndicative.grid(row=0, column=0, sticky="e", padx=5, pady=5)
 		
@@ -140,8 +139,7 @@ class InterfaceGraphique(tk.Tk):
 		labelMode.grid(row=0, column=5, sticky="e", padx=5, pady=5)		
 		
 		
-		#Entries
-		
+		#FrameSup Entries		
 		self.Indicative=tk.Entry(self.FrameSup,textvariable=self.sIndicative,justify='center',bg="white")
 		self.Indicative.grid(row=1,column=0)		
 		
@@ -178,18 +176,17 @@ class InterfaceGraphique(tk.Tk):
 		self.TransparenceButton=tk.Checkbutton(self.FrameMed, text='Transparence',variable=self.bTransparence)
 		self.TransparenceButton.grid(row=1,column=2)
 		
-		#Frame Buttons	
+		#Frame Buttons	 Button to create the QSL
 		self.CreateQSL=tk.Button(self.FrameButtons,text="Create", bg="red",
 		command=self.CreateQSL)	
 		self.CreateQSL.grid(row=0 ,column=2)
 		
 	def CreateQSL(self):
-		
+		""" Function to configure the QSL class variables retrieved from the graphical interface """
 		self.qsl.set_mystation (self.sMyIndicative.get())
 		self.qsl.set_Xpos (self.iPosX.get())
 		self.qsl.set_Ypos (self.iPosY.get())	
 		self.qsl.set_SizeText (self.iSizeText.get())			
-		
 		
 		self.qsl.set_station (self.sIndicative.get())
 		self.qsl.set_date (self.sDate.get())
@@ -203,6 +200,7 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.run()
 				
 	def browser_folder(self, event=None):
+		""" Function to browse and select image files """
 		if self.dialog_open:
 			return
 		filetypes = (
@@ -260,7 +258,7 @@ class QSL():
 		self.HEIGHT=537
 		self.TEXT_SIZE=25
 
-	#setters 
+	#setters  To configure the different variables
 	def set_mystation(self,data):
 		self.mystation=data
 		
