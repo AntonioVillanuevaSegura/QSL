@@ -21,7 +21,6 @@ We just have to select our background image, which will resize to the appropriat
 
 With dark background images it may be interesting to mark transparency
 
-
 Notes: If you use the .bin executable file, 
 the startup directory is located in tmp, so you will have to go to your /home 
 or wherever the image is located. 
@@ -34,9 +33,21 @@ Although I have generated an executable of this python code QSLupdate.bin
 
 For execution in python3 you have to install some dependencies
 
-sudo apt-get install python3-pip
-sudo apt-get install python3-tk
-pip install tk
-pip install --upgrade Pillow
+	sudo apt-get install python3-pip
+	sudo apt-get install python3-tk
+	pip install tk
+	pip install --upgrade Pillow
+
+
+
+If you want to create an executable file from python, you can use Nuitka
+First we need to install the different dependencies:
+
+	sudo apt-get install patchelf
+	python3 -m pip install -U nuitka
+
+and then proceed to compilation
+
+	python3 -m nuitka --standalone --onefile --enable-plugin=tk-inter QSLupdate.py
 
 
