@@ -1,9 +1,18 @@
 """
 Antonio Villanueva Segura F4LEC
-Program to edit a QSL the input arguments are as follows
+Program to edit & print a QSL the input arguments are as follows
 STATION DATE UTC MHZ RST MOD
 
+
+sudo apt-get install python3-pip
+sudo apt-get install python3-tk
+pip install tk
 pip install --upgrade Pillow
+
+pour generer bin
+sudo apt-get install patchelf
+python3 -m pip install -U nuitka
+python3 -m nuitka --standalone --onefile QSLupdate_v4.py
 """
 import sys #Arguments
 import PIL
@@ -11,7 +20,7 @@ from PIL import ImageFont ,Image ,ImageDraw
 
 import tkinter as tk #Gui
 from tkinter import ttk
-from tktooltip import ToolTip #infobulles
+#from tktooltip import ToolTip #infobulles
 from tkinter import filedialog
 
 import os
@@ -153,8 +162,12 @@ class InterfaceGraphique(tk.Tk):
 		self.Mode.grid(row=1,column=5)	
 		
 		#Frame Med
+		
+		labelSourceImage = tk.Label(self.FrameMed, text="Source Base Image", width=25, anchor="center")
+		labelSourceImage.grid(row=0, column=1, sticky="e", padx=5, pady=5)	
+		
 		self.SourceImage=tk.Entry(self.FrameMed,textvariable=self.sSource_image,justify='center',bg="white")
-		self.SourceImage.grid(row=0,column=1)	
+		self.SourceImage.grid(row=1,column=1)	
 		
 		# Vinculo  -> método browse_folder
 		#self.SourceImage.bind("<FocusIn>", self.browser_folder)		
@@ -165,8 +178,12 @@ class InterfaceGraphique(tk.Tk):
 		bg="white")
 		self.TransparenceButton.grid(row=0,column=2)
 		"""
+		labelTransparence = tk.Label(self.FrameMed, text="Transparence", width=25, anchor="center")
+		labelTransparence.grid(row=0, column=2, sticky="e", padx=5, pady=5)
+		
+		
 		self.TransparenceButton=tk.Checkbutton(self.FrameMed, text='Transparence',variable=self.bTransparence)
-		self.TransparenceButton.grid(row=0,column=2)
+		self.TransparenceButton.grid(row=1,column=2)
 		#Frame Buttons	
 		
 		self.CreateQSL=tk.Button(self.FrameButtons,text="Create", bg="red",
@@ -197,10 +214,10 @@ class InterfaceGraphique(tk.Tk):
 		if self.dialog_open:
 			return
 		filetypes = (
+			('All image files', ('*.jpg', '*.jpeg', '*.png', '*.gif', '*.bmp')),
 			('JPEG files', '*.jpg'),
 			('PNG files', '*.png'),
-			('GIF files', '*.gif'),
-			('All image files', ('*.jpg', '*.jpeg', '*.png', '*.gif', '*.bmp'))
+			('GIF files', '*.gif')
 		)
 		
 		initial_dir = os.path.dirname(os.path.abspath(__file__))
@@ -464,9 +481,9 @@ class QSL():
 		#Show image
 		self.img.show()
 
-		# Save image
-		#self.img.save( "QSL_output.jpg")
-		self.img.save( self.station+".jpg")
+		# Save image with extension 
+		ext= (self.source_image) .split(".")[-1]
+		self.img.save( self.station+"."+ext)
 	
 if __name__ == "__main__":
   app = InterfaceGraphique() #Instance InterfaceGraphique tkinter
