@@ -22,6 +22,7 @@ import tkinter as tk #Gui
 from tkinter import ttk
 #from tktooltip import ToolTip #infobulles
 from tkinter import filedialog
+from tkinter import colorchooser
 
 import os
 import sys
@@ -95,6 +96,8 @@ class InterfaceGraphique(tk.Tk):
 		
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
 		self.sSource_image=tk.StringVar(self.FrameSup,value =SOURCE_IMAGE)
+		self.sTextColor=tk.StringVar(self.FrameMed,value="#000000" )
+		self.sFrameColor=tk.StringVar(self.FrameMed,value="#000000" )
 		
 		#Frame FrameMyStation data entries		
 		labelMyCallSign = tk.Label(self.FrameMyStation, text="My callsign")
@@ -177,14 +180,44 @@ class InterfaceGraphique(tk.Tk):
 		labelTransparence = tk.Label(self.FrameMed, text="Transparence", width=25, anchor="center")
 		labelTransparence.grid(row=0, column=2, sticky="e", padx=5, pady=5)
 		
+		
 		self.TransparenceButton=tk.Checkbutton(self.FrameMed, text='Transparence',variable=self.bTransparence)
 		self.TransparenceButton.grid(row=1,column=2)
+		
+		
+		labelcolorText = tk.Label(self.FrameMed, text="Text Color", width=25, anchor="center")
+		labelcolorText.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		
+		self.TextColor = tk.Button(self.FrameMed, text="Text Color", command=self.choose_text_color)
+		self.TextColor.grid(row=1 ,column=3)
+		
+		
+		labelcolorFrame = tk.Label(self.FrameMed, text="Frame Color", width=25, anchor="center")
+		labelcolorFrame.grid(row=0, column=4, sticky="e", padx=5, pady=5)
+		
+		self.FrameColor = tk.Button(self.FrameMed, text="Frame Color", command=self.choose_frame_color)
+		self.FrameColor.grid(row=1 ,column=4)		
+		
 		
 		#Frame Buttons	 Button to create the QSL
 		self.CreateQSL=tk.Button(self.FrameButtons,text="Create", bg="red",
 		command=self.CreateQSL)	
 		self.CreateQSL.grid(row=0 ,column=2)
-		
+
+	def choose_text_color(self):
+		color = colorchooser.askcolor(title="Choose color")
+		if color[1]:
+			#self.sTextColor = color[1]
+			self.sTextColor.set(color[1])
+			
+			
+	def choose_frame_color(self):
+		color = colorchooser.askcolor(title="Choose color")
+		if color[1]:
+			#self.sFrameColor = color[1]
+			self.sFrameColor.set(color[1])
+						
+			
 	def CreateQSL(self):
 		""" Function to configure the QSL class variables retrieved from the graphical interface """
 		self.qsl.set_mystation (self.sMyIndicative.get())
@@ -200,7 +233,14 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.set_mode (self.sMode.get())
 		self.qsl.set_station (self.sIndicative.get())
 		self.qsl.set_transparence(self.bTransparence.get())
-		self.qsl.set_source_image (self.sSource_image.get() )												
+		self.qsl.set_source_image (self.sSource_image.get() )
+
+		self.qsl.set_text_color(self.sTextColor.get())
+		self.qsl.set_frame_color(self.sFrameColor.get())
+
+		
+
+															
 		self.qsl.run()
 				
 	def browser_folder(self, event=None):
@@ -257,6 +297,9 @@ class QSL():
 		self.draw=None
 		self.font=None
 		
+		self.color_frame=None
+		self.color_text=None
+		
 		#default QSL size x=843 , y= 537
 		self.WIDTH=843
 		self.HEIGHT=537
@@ -297,7 +340,13 @@ class QSL():
 		self.source_image =data
 		
 	def set_transparence (self,data):
-		self.transparence =data		
+		self.transparence =data	
+	
+	def set_frame_color	(self,data):
+		self.color_frame=data
+		
+	def set_text_color	(self,data):
+		self.color_text=data		
 		
 	def read_image(self,fichier):
 		"""Read base image  """
@@ -457,11 +506,12 @@ class QSL():
 		self.draw = ImageDraw.Draw(self.img)
 
 		#Create the bottom square containing contact data
-		self.creeCadre(self.WIDTH ,self.HEIGHT ,self.draw,"black",self.transparence)
+		self.creeCadre(self.WIDTH ,self.HEIGHT ,self.draw,self.color_frame,self.transparence)
 
 
 		#Write User , contact data QSL
-		self.write_user_data (self.draw,self.myXpos,self.myYpos,self.MySizeText)
+		#self.write_user_data (self.draw,self.myXpos,self.myYpos,self.MySizeText,"black")
+		self.write_user_data (self.draw,self.myXpos,self.myYpos,self.MySizeText,self.color_text)
 
 		#Drawing in img
 		draw = ImageDraw.Draw(self.img)
