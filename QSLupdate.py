@@ -12,7 +12,7 @@ pip install --upgrade Pillow
 pour generer bin
 sudo apt-get install patchelf
 python3 -m pip install -U nuitka
-python3 -m nuitka --standalone --onefile QSLupdate.py
+python3 -m nuitka --standalone --onefile --enable-plugin=tk-inter QSLupdate.py
 """
 import sys #Arguments
 import PIL
