@@ -26,11 +26,15 @@ from tkinter import filedialog
 import os
 import sys
 
+import time,datetime
+
 
 #Default parameters
 INDICATIVE ="F4LEC"
-DATE="26/07/68"
-UTC="12:00"
+#DATE="26/07/68"
+#UTC="12:00"
+DATE=datetime.datetime.today().strftime('%d/%m/%y')
+UTC=datetime.datetime.today().strftime('%H:%M')
 MHZ="7.000"
 RST ="59"
 MODE ="LSB"
