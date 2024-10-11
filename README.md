@@ -5,6 +5,10 @@ The resulting qsl card has a size 843 x 537
 Works with the following image formats 
 *.jpg', '*.jpeg', '*.png', '*.gif', '*.bmp
 
+[![QSLupdate](https://img.youtube.com/vi/Tt5WtEqMeTg/0.jpg)](https://www.youtube.com/watch?v=Tt5WtEqMeTg)
+
+https://youtu.be/Tt5WtEqMeTg
+
 In the graphic window at the top, we put our amateur radio callsign
 The text appears on the left of the QSL with a default size of 80, 
 but we can change the position and size.
