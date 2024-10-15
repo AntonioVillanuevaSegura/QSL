@@ -225,13 +225,14 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.set_Ypos (self.iPosY.get())	
 		self.qsl.set_SizeText (self.iSizeText.get())			
 		
+		#QSO data
 		self.qsl.set_station (self.sIndicative.get())
 		self.qsl.set_date (self.sDate.get())
 		self.qsl.set_utc (self.sUtc.get())
 		self.qsl.set_mhz (self.sMhz.get())
 		self.qsl.set_rst (self.sRst.get())
 		self.qsl.set_mode (self.sMode.get())
-		self.qsl.set_station (self.sIndicative.get())
+
 		self.qsl.set_transparence(self.bTransparence.get())
 		self.qsl.set_source_image (self.sSource_image.get() )
 
