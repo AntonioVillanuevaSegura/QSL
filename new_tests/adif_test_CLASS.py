@@ -58,7 +58,7 @@ class Adif():
 		for key,value in contact.items():
 			self.contact[key]=value
 			
-	def creer_adif(self,contact):
+	def creer_adif(self):
 		"""Créer une chaîne adif  """
 		# check l'existence du fichier adif 
 		check = self.check()
@@ -185,7 +185,7 @@ contact_adif =Adif()
 contact_adif.set_contact(contact)
 
 #Cree  le string Adif et ecrire adif
-contact_adif.creer_adif(contact)
+contact_adif.creer_adif()
 
 
  
