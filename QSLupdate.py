@@ -40,7 +40,7 @@ MHZ="7.000"
 RST ="59"
 MODE ="LSB"
 TRANSPARENCE =False
-SOURCE_IMAGE="a.jpg"
+SOURCE_IMAGE=""
 
 #default QSL size x=843 , y= 537
 WIDTH=843
@@ -353,13 +353,18 @@ class QSL():
 		print ("Debug base file image :" ,fichier)
 		#Image default Source
 		imageFile = fichier
+		#No image selected as background
+		if (fichier==""):
+			img = Image.new("RGB", (self.WIDTH, self.HEIGHT), "white")
+			print ("You have not selected any image, I use white image by default")
+			return img
 
 		#Try open image
 		try:
 			img=Image.open(imageFile)
 		except IOError:
 			print("Impossible d'ouvrir l'image .arrière-plan blanc par défaut")
-			img = Image.new("RGB", (width, height), "white")
+			img = Image.new("RGB", (self.WIDTH, self.HEIGHT), "white")
 		
 		return img
 		
@@ -475,7 +480,6 @@ class QSL():
 		self.font=self.load_font(mySizeText)
 		draw.text((myX, myY), self.mystation ,color,font=self.font)		
 		
-
 	def resize_image(self,x,y,img):
 		""" Resize image"""
 		print('Debug Org Image Size x : ',x,', y:',y) #Analyze the size of the out QSL  p.e x=843 , y= 537
@@ -521,6 +525,8 @@ class QSL():
 
 		# Save image with extension 
 		ext= (self.source_image) .split(".")[-1]
+		if (ext==""):
+			ext="jpg"
 		self.img.save( self.station+"."+ext)
 	
 if __name__ == "__main__":
