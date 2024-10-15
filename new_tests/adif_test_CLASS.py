@@ -28,6 +28,7 @@ import datetime
 import os
 
 class Adif():
+	""" Classe pour ecrire l'Adif dans un fichier externe  vous devez saisir les données du qso"""
 	def __init__(self):	
 		self.contact = {
 			'CALL': None,
@@ -45,29 +46,22 @@ class Adif():
 		}
 		self.programid="F4LEC_soft"
 		self.adif_version="3.1.0"
-		self.adif=None 
+		self.adif=None #Text adif
+		self.fichier='mi_log.adi' #Nom fichier externe
 	
 	def valeur_vide(self,valeur):
 		""" valeur null"""
 		return valeur is None	
 	
-	#Setters Set values , [key]=value
-	def set(self,key,valeur ):
-		""" set value of a [key]=value in a dictionary p.e set.contact  """
-		self.contact[key]=valeur
-	
 	def set_contact (self,contact):
-		""" Set self.contact local avec dict. contact externe e """
+		""" Set self.contact local avec dict. contact externe dict."""
 		for key,value in contact.items():
 			self.contact[key]=value
 			
 	def creer_adif(self,contact):
 		"""Créer une chaîne adif  """
-		
-		""" check existence adif """
+		# check l'existence du fichier adif 
 		check = self.check()
-		
-		print ("Existe ",check)
 		
 		maintenant = datetime.datetime.now()
 
@@ -128,21 +122,30 @@ class Adif():
 			self.adif += f"<EQSL_QSLRDATE:{len(self.contact['EQSL_QSLRDATE'])}>{self.contact['EQSL_QSLRDATE']}"					
 		self.adif += "<EOR>\n"
 		
+		self.write () #Ecrire Adif dans un fichier externe
+		
 		return self.adif
 
-	def write(self, fichier='mi_log.adi'):
+	def write(self):
 		""" write adif file with adif data """
-		with open(fichier, 'a') as fichier:
+		with open(self.fichier, 'a') as fichier:
 			fichier.write(self.adif)
-					
-	def check(self, fichier='mi_log.adi'):	
+			
+	def exist_file(self):
+		""" Check for the existence of a file use in check  """
+		if os.path.exists(self.fichier):
+			return True
+		else:
+			return False
+								
+	def check(self):	
 		""" analyse l'existence du fichier et son contenu"""
-		if not (self.exist_file (fichier)):
+		if not (self.exist_file ()):
 			return False	
 		
 		# open fichier
 		try:
-			with open(fichier, 'r') as text:
+			with open(self.fichier, 'r') as text:
 				contenu = text.read()
 		except IOError as e:
 			return False
@@ -157,13 +160,8 @@ class Adif():
 		
 		return False		
 			
-	def exist_file(self, fichier='mi_log.adi'):
-		""" Check for the existence of a file """
-		if os.path.exists(fichier):
-			return True
-		else:
-			return False
-		
+
+""" Exemple de données de QSO de contact"""		
 contact = {
 	'CALL': 'F4LEC',
 	'BAND': '40M',
@@ -180,19 +178,15 @@ contact = {
 }
 
 
-#Instance classe Adif
+#Cree une instance classe Adif
 contact_adif =Adif() 
 
-#Set contact dans l'instance de la classe Adif 
+#Set le contact QSO  dans l'instance de la classe Adif 
 contact_adif.set_contact(contact)
 
-#Cree  le string Adif 
-scontact =contact_adif.creer_adif(contact)
+#Cree  le string Adif et ecrire adif
+contact_adif.creer_adif(contact)
 
-# Enregistrer dans un fichier
-with open('mi_log.adi', 'a') as fichier:
-    fichier.write(scontact)
+
  
- 
-print (contact_adif)
 
