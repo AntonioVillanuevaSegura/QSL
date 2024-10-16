@@ -31,11 +31,12 @@ import time,datetime
 
 
 #Default parameters
-INDICATIVE ="F4LEC"
+MY_CALL ="F4LEC"
 #DATE="26/07/68"
 #UTC="12:00"
 DATE=datetime.datetime.today().strftime('%d/%m/%y')
 UTC=datetime.datetime.today().strftime('%H:%M')
+BAND="40"
 MHZ="7.000"
 RST ="59"
 MODE ="LSB"
@@ -85,16 +86,18 @@ class InterfaceGraphique(tk.Tk):
 		self.FrameButtons.pack()			
 		
 		#Variables 		
-		self.sMyIndicative=tk.StringVar(self.FrameMyStation,value =INDICATIVE)
+		self.sMY_CALL=tk.StringVar(self.FrameMyStation,value =MY_CALL)
 		self.iPosX=	tk.IntVar(self.FrameMyStation,value =1)	
 		self.iPosY=	tk.IntVar(self.FrameMyStation,value =1)	
 		self.iSizeText=	tk.IntVar(self.FrameMyStation,value =MY_TEXT_SIZE)	
 				
-		self.sIndicative=tk.StringVar(self.FrameSup,value =INDICATIVE)	
+		self.sCALL=tk.StringVar(self.FrameSup,value =MY_CALL)	
 		self.sDate=tk.StringVar(self.FrameSup,value =DATE)	
 		self.sUtc=tk.StringVar(self.FrameSup,value =UTC)
+		self.sBAND=tk.StringVar(self.FrameSup,value =BAND)
 		self.sMhz=tk.StringVar(self.FrameSup,value =MHZ)
-		self.sRst=tk.StringVar(self.FrameSup,value =RST)
+		self.sRST_SEND=tk.StringVar(self.FrameSup,value =RST)
+		self.sRST_RCVD=tk.StringVar(self.FrameSup,value =RST)		
 		self.sMode=tk.StringVar(self.FrameSup,value =MODE)	
 		
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
@@ -102,56 +105,65 @@ class InterfaceGraphique(tk.Tk):
 		self.sTextColor=tk.StringVar(self.FrameMed,value="#000000" )
 		self.sFrameColor=tk.StringVar(self.FrameMed,value="#000000" )
 		
-		#Frame FrameMyStation data entries		
-		labelMyCallSign = tk.Label(self.FrameMyStation, text="My callsign")
-		labelMyCallSign.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+		#Frame FrameMyStation data entries	
+			
+		labelMyCallSign = tk.Label(self.FrameMyStation, text="MY CALLSIGN",anchor="center")
+		labelMyCallSign.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
 		
-		self.MyIndicative=tk.Entry(self.FrameMyStation,textvariable=self.sMyIndicative,justify='center',bg="yellow")
-		self.MyIndicative.grid(row=0,column=2)		
+		self.MY_CALL=tk.Entry(self.FrameMyStation,textvariable=self.sMY_CALL,justify='center',bg="yellow")
+		self.MY_CALL.grid(row=1,column=0)		
 		
-		labelX = tk.Label(self.FrameMyStation, text="X")
-		labelX.grid(row=0, column=3, sticky="e", padx=5, pady=5)		
+		
+		labelX = tk.Label(self.FrameMyStation, text="X",anchor="center")
+		labelX.grid(row=0, column=1, sticky="ew", padx=5, pady=5)		
 		
 		self.MyPosX=tk.Entry(self.FrameMyStation,textvariable=self.iPosX,justify='center',bg="yellow")
-		self.MyPosX.grid(row=0,column=4)	
+		self.MyPosX.grid(row=1,column=1)	
 		
 		
-		labelY = tk.Label(self.FrameMyStation, text="Y")
-		labelY.grid(row=0, column=5, sticky="e", padx=5, pady=5)
+		labelY = tk.Label(self.FrameMyStation, text="Y",anchor="center")
+		labelY.grid(row=0, column=2, sticky="ew", padx=5, pady=5)
 		
 		self.MyPosY=tk.Entry(self.FrameMyStation,textvariable=self.iPosY,justify='center',bg="yellow")
-		self.MyPosY.grid(row=0,column=6)	
+		self.MyPosY.grid(row=1,column=2)	
 		
-		labelY = tk.Label(self.FrameMyStation, text="SIZE")
-		labelY.grid(row=0, column=7, sticky="e", padx=5, pady=5)
+		
+		labelSize = tk.Label(self.FrameMyStation, text="SIZE",anchor="center")
+		labelSize.grid(row=0, column=3, sticky="ew", padx=5, pady=5)
 		
 		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow")
-		self.MySizeText.grid(row=0,column=8)					
+		self.MySizeText.grid(row=1,column=3)					
 		
 		
 		#Frame Sup Labels 
-		labelIndicative = tk.Label(self.FrameSup, text="indicative", width=25, anchor="center")
-		labelIndicative.grid(row=0, column=0, sticky="e", padx=5, pady=5)
+		labelCALL = tk.Label(self.FrameSup, text="CALL", width=25, anchor="center")
+		labelCALL.grid(row=0, column=0, sticky="e", padx=5, pady=5)
 		
-		labelDate = tk.Label(self.FrameSup, text="Date", width=25, anchor="center")
+		labelDate = tk.Label(self.FrameSup, text="DATE", width=25, anchor="center")
 		labelDate.grid(row=0, column=1, sticky="e", padx=5, pady=5)
 		
 		labelUtc = tk.Label(self.FrameSup, text="UTC", width=25, anchor="center")
 		labelUtc.grid(row=0, column=2, sticky="e", padx=5, pady=5)
 		
+		labeBand = tk.Label(self.FrameSup, text="BAND", width=25, anchor="center")
+		labeBand.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		
 		labelMhz = tk.Label(self.FrameSup, text="Mhz", width=25, anchor="center")
-		labelMhz.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		labelMhz.grid(row=0, column=4, sticky="e", padx=5, pady=5)
 		
-		labelRst = tk.Label(self.FrameSup, text="RST", width=25, anchor="center")
-		labelRst.grid(row=0, column=4, sticky="e", padx=5, pady=5)
+		labelRst = tk.Label(self.FrameSup, text="RST RX", width=25, anchor="center")
+		labelRst.grid(row=0, column=5, sticky="e", padx=5, pady=5)
 		
-		labelMode = tk.Label(self.FrameSup, text="Mode", width=25, anchor="center")
-		labelMode.grid(row=0, column=5, sticky="e", padx=5, pady=5)		
+		labelRst = tk.Label(self.FrameSup, text="RST TX", width=25, anchor="center")
+		labelRst.grid(row=0, column=6, sticky="e", padx=5, pady=5)		
+		
+		labelMode = tk.Label(self.FrameSup, text="MODE", width=25, anchor="center")
+		labelMode.grid(row=0, column=7, sticky="e", padx=5, pady=5)		
 		
 		
 		#FrameSup Entries		
-		self.Indicative=tk.Entry(self.FrameSup,textvariable=self.sIndicative,justify='center',bg="white")
-		self.Indicative.grid(row=1,column=0)		
+		self.CALL=tk.Entry(self.FrameSup,textvariable=self.sCALL,justify='center',bg="white")
+		self.CALL.grid(row=1,column=0)		
 		
 		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white")
 		self.Date.grid(row=1,column=1)	
@@ -159,14 +171,20 @@ class InterfaceGraphique(tk.Tk):
 		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white")
 		self.Utc.grid(row=1,column=2)	
 		
-		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
-		self.Mhz.grid(row=1,column=3)
+		self.BAND=tk.Entry(self.FrameSup,textvariable=self.sBAND,justify='center',bg="white")
+		self.BAND.grid(row=1,column=3)
 		
-		self.Rst=tk.Entry(self.FrameSup,textvariable=self.sRst,justify='center',bg="white")
-		self.Rst.grid(row=1,column=4)	
+		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
+		self.Mhz.grid(row=1,column=4)
+		
+		self.RST_RCVD=tk.Entry(self.FrameSup,textvariable=self.sRST_RCVD,justify='center',bg="white")
+		self.RST_RCVD.grid(row=1,column=5)	
+
+		self.RST_SEND=tk.Entry(self.FrameSup,textvariable=self.sRST_SEND,justify='center',bg="white")
+		self.RST_SEND.grid(row=1,column=6)		
 		
 		self.Mode=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white")
-		self.Mode.grid(row=1,column=5)	
+		self.Mode.grid(row=1,column=7)	
 		
 		#Frame Med
 		
@@ -221,17 +239,17 @@ class InterfaceGraphique(tk.Tk):
 						
 	def CreateQSL(self):
 		""" Function to configure the QSL class variables retrieved from the graphical interface """
-		self.qsl.set_mystation (self.sMyIndicative.get())
+		self.qsl.set_mystation (self.sMY_CALL.get())
 		self.qsl.set_Xpos (self.iPosX.get())
 		self.qsl.set_Ypos (self.iPosY.get())	
 		self.qsl.set_SizeText (self.iSizeText.get())			
 		
 		#QSL contact
-		self.qsl.set_station (self.sIndicative.get())
+		self.qsl.set_station (self.sCALL.get())
 		self.qsl.set_date (self.sDate.get())
 		self.qsl.set_utc (self.sUtc.get())
 		self.qsl.set_mhz (self.sMhz.get())
-		self.qsl.set_rst (self.sRst.get())
+		self.qsl.set_rst (self.sRST_SEND.get())
 		self.qsl.set_mode (self.sMode.get())
 		
 		self.qsl.set_transparence(self.bTransparence.get())
@@ -244,10 +262,10 @@ class InterfaceGraphique(tk.Tk):
 				
 		
 		contact = {
-			'CALL': self.sIndicative.get(),
+			'CALL': self.sCALL.get(),
 			'BAND': self.sMhz.get(),
 			'MODE': self.sMode.get(),
-			'RST_SENT': self.sRst.get(),
+			'RST_SENT': self.sRST_SEND.get(),
 			'RST_RCVD': '',
 			'QSL_SENT': '',
 			'QSL_SENT_VIA':'e',
@@ -313,7 +331,7 @@ class QSL():
 		self.date=None
 		self.utc=None
 		self.mhz=None
-		self.rst=None
+		self.RST_SEND=None
 		self.mode=None
 		self.transparence=False
 		self.source_image=SOURCE_IMAGE
@@ -355,7 +373,7 @@ class QSL():
 		self.mhz=data	
 		
 	def set_rst (self,data):
-		self.rst=data	
+		self.RST_SEND=data	
 		
 	def set_mode (self,data):
 		self.mode=data											
@@ -487,7 +505,7 @@ class QSL():
 		draw.text((380, y_text), self.mhz ,color,font=self.font)
 
 		#Draw RST
-		draw.text((520, y_text), self.rst ,color,font=self.font)
+		draw.text((520, y_text), self.RST_SEND ,color,font=self.font)
 
 		#Draw MODE
 		draw.text((630, y_text), self.mode ,color,font=self.font)
