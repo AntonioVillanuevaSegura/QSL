@@ -40,6 +40,9 @@ MODE ="LSB"
 TRANSPARENCE =False
 SOURCE_IMAGE=""
 
+#GUI
+TEXT_WIDTH =20
+
 #default QSL size x=843 , y= 537
 WIDTH=843
 HEIGHT=537
@@ -96,6 +99,7 @@ class InterfaceGraphique(tk.Tk):
 		self.sRST_SEND=tk.StringVar(self.FrameSup,value =RST)
 		self.sRST_RCVD=tk.StringVar(self.FrameSup,value =RST)		
 		self.sMode=tk.StringVar(self.FrameSup,value =MODE)	
+		self.sQSL_SENT=tk.StringVar(self.FrameSup,value ='Y')			
 		
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
 		self.sSource_image=tk.StringVar(self.FrameSup,value =SOURCE_IMAGE)
@@ -104,91 +108,106 @@ class InterfaceGraphique(tk.Tk):
 		
 		#Frame FrameMyStation data entries	
 			
-		labelMyCallSign = tk.Label(self.FrameMyStation, text="MY CALLSIGN",anchor="center")
-		labelMyCallSign.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+		labelMyCallSign = tk.Label(self.FrameMyStation, text="MY CALLSIGN",anchor="center",width=15)
+		labelMyCallSign.grid(row=0, column=0, sticky="ew", padx=2, pady=2)
 		
-		self.MY_CALL=tk.Entry(self.FrameMyStation,textvariable=self.sMY_CALL,justify='center',bg="yellow")
+		self.MY_CALL=tk.Entry(self.FrameMyStation,textvariable=self.sMY_CALL,justify='center',bg="yellow",width=20)
 		self.MY_CALL.grid(row=1,column=0)		
 		
 		
-		labelX = tk.Label(self.FrameMyStation, text="X",anchor="center")
-		labelX.grid(row=0, column=1, sticky="ew", padx=5, pady=5)		
+		labelX = tk.Label(self.FrameMyStation, text="X",anchor="center",width=1)
+		labelX.grid(row=0, column=1, sticky="ew", padx=2, pady=2)		
 		
-		self.MyPosX=tk.Entry(self.FrameMyStation,textvariable=self.iPosX,justify='center',bg="yellow")
+		self.MyPosX=tk.Entry(self.FrameMyStation,textvariable=self.iPosX,justify='center',bg="yellow",width=5)
 		self.MyPosX.grid(row=1,column=1)	
 		
 		
-		labelY = tk.Label(self.FrameMyStation, text="Y",anchor="center")
-		labelY.grid(row=0, column=2, sticky="ew", padx=5, pady=5)
+		labelY = tk.Label(self.FrameMyStation, text="Y",anchor="center",width=1)
+		labelY.grid(row=0, column=2, sticky="ew", padx=2, pady=2)
 		
-		self.MyPosY=tk.Entry(self.FrameMyStation,textvariable=self.iPosY,justify='center',bg="yellow")
+		self.MyPosY=tk.Entry(self.FrameMyStation,textvariable=self.iPosY,justify='center',bg="yellow",width=5)
 		self.MyPosY.grid(row=1,column=2)	
 		
 		
-		labelSize = tk.Label(self.FrameMyStation, text="SIZE",anchor="center")
-		labelSize.grid(row=0, column=3, sticky="ew", padx=5, pady=5)
+		labelSize = tk.Label(self.FrameMyStation, text="SIZE",anchor="center",width=5)
+		labelSize.grid(row=0, column=3, sticky="ew", padx=2, pady=2)
 		
-		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow")
+		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow",width=5)
 		self.MySizeText.grid(row=1,column=3)					
-		
-		
+				
 		#Frame Sup Labels QSO CONTACT 
 		"""CALL BAND MODE RST_SENT RST_RCVD QSL_SENT QSL_SENT_VIA QSLMSG APP_EQSL_AG
 		   GRIDSQUARE EQSL_QSL_RCVD EQSL_QSLRDATE """
 		   
-		labelCALL = tk.Label(self.FrameSup, text="CALL", width=25, anchor="center")
-		labelCALL.grid(row=0, column=0, sticky="e", padx=5, pady=5)
+		labelCALL = tk.Label(self.FrameSup, text="CALL", width=TEXT_WIDTH, anchor="center")
+		labelCALL.grid(row=0, column=0, sticky="e", padx=2, pady=2)
 		
-		labelDate = tk.Label(self.FrameSup, text="DATE", width=25, anchor="center")
-		labelDate.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+		labelDate = tk.Label(self.FrameSup, text="DATE", width=TEXT_WIDTH, anchor="center")
+		labelDate.grid(row=0, column=1, sticky="e", padx=2, pady=2)
 		
-		labelUtc = tk.Label(self.FrameSup, text="UTC", width=25, anchor="center")
-		labelUtc.grid(row=0, column=2, sticky="e", padx=5, pady=5)
+		labelUtc = tk.Label(self.FrameSup, text="UTC", width=TEXT_WIDTH, anchor="center")
+		labelUtc.grid(row=0, column=2, sticky="e", padx=2, pady=2)
 		
-		labeBAND = tk.Label(self.FrameSup, text="BAND", width=25, anchor="center")
-		labeBAND.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		labeBAND = tk.Label(self.FrameSup, text="BAND", width=TEXT_WIDTH, anchor="center")
+		labeBAND.grid(row=0, column=3, sticky="e", padx=2, pady=2)
 		
-		labelMhz = tk.Label(self.FrameSup, text="Mhz", width=25, anchor="center")
-		labelMhz.grid(row=0, column=4, sticky="e", padx=5, pady=5)
+		labelMhz = tk.Label(self.FrameSup, text="Mhz", width=TEXT_WIDTH, anchor="center")
+		labelMhz.grid(row=0, column=4, sticky="e", padx=2, pady=2)
 		
-		labelRST_SENT = tk.Label(self.FrameSup, text="RST RX", width=25, anchor="center")
-		labelRST_SENT.grid(row=0, column=5, sticky="e", padx=5, pady=5)
+		labelRST_SENT = tk.Label(self.FrameSup, text="RST RX", width=TEXT_WIDTH, anchor="center")
+		labelRST_SENT.grid(row=0, column=5, sticky="e", padx=2, pady=2)
 		
-		labelRST_RCVD = tk.Label(self.FrameSup, text="RST TX", width=25, anchor="center")
-		labelRST_RCVD.grid(row=0, column=6, sticky="e", padx=5, pady=5)		
+		labelRST_RCVD = tk.Label(self.FrameSup, text="RST TX", width=TEXT_WIDTH, anchor="center")
+		labelRST_RCVD.grid(row=0, column=6, sticky="e", padx=2, pady=2)		
 		
-		labelMODE = tk.Label(self.FrameSup, text="MODE", width=25, anchor="center")
-		labelMODE.grid(row=0, column=7, sticky="e", padx=5, pady=5)		
+		labelMODE = tk.Label(self.FrameSup, text="MODE", width=TEXT_WIDTH, anchor="center")
+		labelMODE.grid(row=0, column=7, sticky="e", padx=2, pady=2)	
+		
+		labelQSL_SENT = tk.Label(self.FrameSup, text="QSL_SENT", width=TEXT_WIDTH, anchor="center")
+		labelQSL_SENT.grid(row=0, column=8, sticky="e", padx=2, pady=2)			
 				
 		#FrameSup Entries  QSO CONTACT 	
 		self.CALL=tk.Entry(self.FrameSup,textvariable=self.sCALL,justify='center',bg="white")
 		self.CALL.grid(row=1,column=0)		
 		
-		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white")
+		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white",width=10)
 		self.Date.grid(row=1,column=1)	
 		
-		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white")
+		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white",width=7)
 		self.Utc.grid(row=1,column=2)	
 		
-		self.BAND=tk.Entry(self.FrameSup,textvariable=self.sBAND,justify='center',bg="white")
+		self.BAND=tk.Entry(self.FrameSup,textvariable=self.sBAND,justify='center',bg="white",width=10)
 		self.BAND.grid(row=1,column=3)
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
 		self.Mhz.grid(row=1,column=4)
 		
-		self.RST_RCVD=tk.Entry(self.FrameSup,textvariable=self.sRST_RCVD,justify='center',bg="white")
+		self.RST_RCVD=tk.Entry(self.FrameSup,textvariable=self.sRST_RCVD,justify='center',bg="white",width=5)
 		self.RST_RCVD.grid(row=1,column=5)	
 
-		self.RST_SEND=tk.Entry(self.FrameSup,textvariable=self.sRST_SEND,justify='center',bg="white")
+		self.RST_SEND=tk.Entry(self.FrameSup,textvariable=self.sRST_SEND,justify='center',bg="white",width=5)
 		self.RST_SEND.grid(row=1,column=6)		
 		
-		self.MODE=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white")
+		self.MODE=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white",width=5)
 		self.MODE.grid(row=1,column=7)	
+		
+		"""
+		self.QSL_SENT=tk.Entry(self.FrameSup,textvariable=self.sQSL_SENT,justify='center',bg="white",width=5)
+		self.QSL_SENT.grid(row=1,column=8)		
+		"""
+		
+		vQSL_SENT = ('Y','N')
+		self.QSL_SENT = ttk.Combobox(self.FrameSup, values=vQSL_SENT, width=5, justify='center')
+		self.QSL_SENT.grid(row=1, column=8)
+		
+		self.QSL_SENT.set(vQSL_SENT[1])
+		
+		self.QSL_SENT['state'] = 'readonly'
 		
 		#Frame Med Source Image Colors  ...
 		
-		labelSourceImage = tk.Label(self.FrameMed, text="Source Base Image", width=25, anchor="center")
-		labelSourceImage.grid(row=0, column=1, sticky="e", padx=5, pady=5)	
+		labelSourceImage = tk.Label(self.FrameMed, text="Source Base Image", width=TEXT_WIDTH, anchor="center")
+		labelSourceImage.grid(row=0, column=1, sticky="e", padx=2, pady=2)	
 		
 		self.SourceImage=tk.Entry(self.FrameMed,textvariable=self.sSource_image,justify='center',bg="white")
 		self.SourceImage.grid(row=1,column=1)	
@@ -197,20 +216,20 @@ class InterfaceGraphique(tk.Tk):
 		#self.SourceImage.bind("<FocusIn>", self.browser_folder)		
 		self.SourceImage.bind("<Button-1>", self.browser_folder)	
 		
-		labelTransparence = tk.Label(self.FrameMed, text="Transparence", width=25, anchor="center")
-		labelTransparence.grid(row=0, column=2, sticky="e", padx=5, pady=5)
+		labelTransparence = tk.Label(self.FrameMed, text="Transparence", width=TEXT_WIDTH, anchor="center")
+		labelTransparence.grid(row=0, column=2, sticky="e", padx=2, pady=2)
 				
 		self.TransparenceButton=tk.Checkbutton(self.FrameMed, text='Transparence',variable=self.bTransparence)
 		self.TransparenceButton.grid(row=1,column=2)
 		
-		labelcolorText = tk.Label(self.FrameMed, text="Text Color", width=25, anchor="center")
-		labelcolorText.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		labelcolorText = tk.Label(self.FrameMed, text="Text Color", width=TEXT_WIDTH, anchor="center")
+		labelcolorText.grid(row=0, column=3, sticky="e", padx=2, pady=2)
 		
 		self.TextColor = tk.Button(self.FrameMed, text="Text Color", command=self.choose_text_color)
 		self.TextColor.grid(row=1 ,column=3)
 		
-		labelcolorFrame = tk.Label(self.FrameMed, text="Frame Color", width=25, anchor="center")
-		labelcolorFrame.grid(row=0, column=4, sticky="e", padx=5, pady=5)
+		labelcolorFrame = tk.Label(self.FrameMed, text="Frame Color", width=TEXT_WIDTH, anchor="center")
+		labelcolorFrame.grid(row=0, column=4, sticky="e", padx=2, pady=2)
 		
 		self.FrameColor = tk.Button(self.FrameMed, text="Frame Color", command=self.choose_frame_color)
 		self.FrameColor.grid(row=1 ,column=4)		
@@ -260,8 +279,8 @@ class InterfaceGraphique(tk.Tk):
 			'BAND': self.sMhz.get(),
 			'MODE': self.sMode.get(),
 			'RST_SENT': self.sRST_SEND.get(),
-			'RST_RCVD': '',
-			'QSL_SENT': '',
+			'RST_RCVD': self.sRST_RCVD.get(),
+			'QSL_SENT': self.QSL_SENT.get(),
 			'QSL_SENT_VIA':'e',
 			'QSLMSG':'TNX QSO - 73',
 			'APP_EQSL_AG':'',
@@ -564,7 +583,6 @@ class QSL():
 		if (ext==""):
 			ext="jpg"
 		self.img.save( self.station+"."+ext)
-
 
 class Adif():
 	""" Classe pour ecrire l'Adif dans un fichier externe  vous devez saisir les données du qso"""
