@@ -99,7 +99,7 @@ class InterfaceGraphique(tk.Tk):
 		self.sRST_SEND=tk.StringVar(self.FrameSup,value =RST)
 		self.sRST_RCVD=tk.StringVar(self.FrameSup,value =RST)		
 		self.sMode=tk.StringVar(self.FrameSup,value =MODE)	
-		self.sQSL_SENT=tk.StringVar(self.FrameSup,value ='Y')			
+		#self.sQSL_SENT=tk.StringVar(self.FrameSup,value ='Y')			
 		
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
 		self.sSource_image=tk.StringVar(self.FrameSup,value =SOURCE_IMAGE)
@@ -176,8 +176,20 @@ class InterfaceGraphique(tk.Tk):
 		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white",width=7)
 		self.Utc.grid(row=1,column=2)	
 		
+	
 		self.BAND=tk.Entry(self.FrameSup,textvariable=self.sBAND,justify='center',bg="white",width=10)
 		self.BAND.grid(row=1,column=3)
+	
+		"""
+		vBAND = ('2222 m','630 m')
+		self.BAND = ttk.Combobox(self.FrameSup, values=vBAND, width=5, justify='center')
+		self.BAND.grid(row=1, column=8)
+		
+		self.BAND.set(vBAND[1])
+		
+		self.BAND['state'] = 'readonly'		
+		"""
+		
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
 		self.Mhz.grid(row=1,column=4)
