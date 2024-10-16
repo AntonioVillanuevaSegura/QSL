@@ -1,8 +1,6 @@
 """
 Antonio Villanueva Segura F4LEC 
 Program to edit & print a QSL the input arguments are as follows
-STATION DATE UTC MHZ RST MOD
-
 
 sudo apt-get install python3-pip
 sudo apt-get install python3-tk
@@ -31,9 +29,8 @@ import time,datetime
 
 
 #Default parameters
+VERSION_SOFT= 2.0
 MY_CALL ="F4LEC"
-#DATE="26/07/68"
-#UTC="12:00"
 DATE=datetime.datetime.today().strftime('%d/%m/%y')
 UTC=datetime.datetime.today().strftime('%H:%M')
 BAND="40"
@@ -135,7 +132,10 @@ class InterfaceGraphique(tk.Tk):
 		self.MySizeText.grid(row=1,column=3)					
 		
 		
-		#Frame Sup Labels 
+		#Frame Sup Labels QSO CONTACT 
+		"""CALL BAND MODE RST_SENT RST_RCVD QSL_SENT QSL_SENT_VIA QSLMSG APP_EQSL_AG
+		   GRIDSQUARE EQSL_QSL_RCVD EQSL_QSLRDATE """
+		   
 		labelCALL = tk.Label(self.FrameSup, text="CALL", width=25, anchor="center")
 		labelCALL.grid(row=0, column=0, sticky="e", padx=5, pady=5)
 		
@@ -145,23 +145,22 @@ class InterfaceGraphique(tk.Tk):
 		labelUtc = tk.Label(self.FrameSup, text="UTC", width=25, anchor="center")
 		labelUtc.grid(row=0, column=2, sticky="e", padx=5, pady=5)
 		
-		labeBand = tk.Label(self.FrameSup, text="BAND", width=25, anchor="center")
-		labeBand.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+		labeBAND = tk.Label(self.FrameSup, text="BAND", width=25, anchor="center")
+		labeBAND.grid(row=0, column=3, sticky="e", padx=5, pady=5)
 		
 		labelMhz = tk.Label(self.FrameSup, text="Mhz", width=25, anchor="center")
 		labelMhz.grid(row=0, column=4, sticky="e", padx=5, pady=5)
 		
-		labelRst = tk.Label(self.FrameSup, text="RST RX", width=25, anchor="center")
-		labelRst.grid(row=0, column=5, sticky="e", padx=5, pady=5)
+		labelRST_SENT = tk.Label(self.FrameSup, text="RST RX", width=25, anchor="center")
+		labelRST_SENT.grid(row=0, column=5, sticky="e", padx=5, pady=5)
 		
-		labelRst = tk.Label(self.FrameSup, text="RST TX", width=25, anchor="center")
-		labelRst.grid(row=0, column=6, sticky="e", padx=5, pady=5)		
+		labelRST_RCVD = tk.Label(self.FrameSup, text="RST TX", width=25, anchor="center")
+		labelRST_RCVD.grid(row=0, column=6, sticky="e", padx=5, pady=5)		
 		
-		labelMode = tk.Label(self.FrameSup, text="MODE", width=25, anchor="center")
-		labelMode.grid(row=0, column=7, sticky="e", padx=5, pady=5)		
-		
-		
-		#FrameSup Entries		
+		labelMODE = tk.Label(self.FrameSup, text="MODE", width=25, anchor="center")
+		labelMODE.grid(row=0, column=7, sticky="e", padx=5, pady=5)		
+				
+		#FrameSup Entries  QSO CONTACT 	
 		self.CALL=tk.Entry(self.FrameSup,textvariable=self.sCALL,justify='center',bg="white")
 		self.CALL.grid(row=1,column=0)		
 		
@@ -183,10 +182,10 @@ class InterfaceGraphique(tk.Tk):
 		self.RST_SEND=tk.Entry(self.FrameSup,textvariable=self.sRST_SEND,justify='center',bg="white")
 		self.RST_SEND.grid(row=1,column=6)		
 		
-		self.Mode=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white")
-		self.Mode.grid(row=1,column=7)	
+		self.MODE=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white")
+		self.MODE.grid(row=1,column=7)	
 		
-		#Frame Med
+		#Frame Med Source Image Colors  ...
 		
 		labelSourceImage = tk.Label(self.FrameMed, text="Source Base Image", width=25, anchor="center")
 		labelSourceImage.grid(row=0, column=1, sticky="e", padx=5, pady=5)	
@@ -200,18 +199,15 @@ class InterfaceGraphique(tk.Tk):
 		
 		labelTransparence = tk.Label(self.FrameMed, text="Transparence", width=25, anchor="center")
 		labelTransparence.grid(row=0, column=2, sticky="e", padx=5, pady=5)
-		
-		
+				
 		self.TransparenceButton=tk.Checkbutton(self.FrameMed, text='Transparence',variable=self.bTransparence)
 		self.TransparenceButton.grid(row=1,column=2)
-		
 		
 		labelcolorText = tk.Label(self.FrameMed, text="Text Color", width=25, anchor="center")
 		labelcolorText.grid(row=0, column=3, sticky="e", padx=5, pady=5)
 		
 		self.TextColor = tk.Button(self.FrameMed, text="Text Color", command=self.choose_text_color)
 		self.TextColor.grid(row=1 ,column=3)
-		
 		
 		labelcolorFrame = tk.Label(self.FrameMed, text="Frame Color", width=25, anchor="center")
 		labelcolorFrame.grid(row=0, column=4, sticky="e", padx=5, pady=5)
@@ -258,10 +254,8 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.set_frame_color(self.sFrameColor.get())
 		
 		#Adif
-		#Create QSL contact
-				
-		
-		contact = {
+		#Create QSL contact				
+		contact = {#Contact model QSO adif version eqsl
 			'CALL': self.sCALL.get(),
 			'BAND': self.sMhz.get(),
 			'MODE': self.sMode.get(),
@@ -276,13 +270,13 @@ class InterfaceGraphique(tk.Tk):
 			'EQSL_QSLRDATE':''
 		}
 		
-		#Set data QSO contact
+		#Adif Set data QSO contact
 		(self.adif).set_contact(contact)
 		
-		#Cree  le string Adif et ecrire adif
+		#Adif Cree  le string Adif et ecrire adif
 		(self.adif).creer_adif()
 
-															
+		#Make the graphic QSL													
 		self.qsl.run()
 				
 	def browser_folder(self, event=None):
@@ -332,7 +326,7 @@ class QSL():
 		self.utc=None
 		self.mhz=None
 		self.RST_SEND=None
-		self.mode=None
+		self.MODE=None
 		self.transparence=False
 		self.source_image=SOURCE_IMAGE
 		self.image=None
@@ -376,7 +370,7 @@ class QSL():
 		self.RST_SEND=data	
 		
 	def set_mode (self,data):
-		self.mode=data											
+		self.MODE=data											
 	 
 	def set_source_image (self,data):
 		self.source_image =data
@@ -392,7 +386,7 @@ class QSL():
 		
 	def read_image(self,fichier):
 		"""Read base image  """
-		print ("Debug base file image :" ,fichier)
+		print ("DEBUG base file image :" ,fichier)
 		#Image default Source
 		imageFile = fichier
 		#No image selected as background
@@ -476,10 +470,10 @@ class QSL():
 		draw.text((122+30, y_text), "DATE" ,color,font=self.font)
 
 		#Draw HOUR
-		draw.text((260, y_text), "UTC" ,color,font=self.font)
+		draw.text((272, y_text), "UTC" ,color,font=self.font)
 
 		#Draw Mhz
-		draw.text((380, y_text), "MHZ" ,color,font=self.font)
+		draw.text((395, y_text), "MHZ" ,color,font=self.font)
 
 		#Draw RST
 		draw.text((520, y_text), "RST" ,color,font=self.font)
@@ -508,7 +502,7 @@ class QSL():
 		draw.text((520, y_text), self.RST_SEND ,color,font=self.font)
 
 		#Draw MODE
-		draw.text((630, y_text), self.mode ,color,font=self.font)
+		draw.text((630, y_text), self.MODE ,color,font=self.font)
 		
 
 		#Maximum size control for the position and size of my text 
@@ -706,5 +700,7 @@ class Adif():
 		return False		
 				
 if __name__ == "__main__":
-  app = InterfaceGraphique() #Instance InterfaceGraphique tkinter
-  app.mainloop() #tkinter main loop			
+	
+	print ("soft version ", VERSION_SOFT) #Version logiciel
+	app = InterfaceGraphique() #Instance InterfaceGraphique tkinter
+	app.mainloop() #tkinter main loop			
