@@ -461,7 +461,7 @@ class QSL():
 		#Line Y of the text level
 		x=self.WIDTH #default
 		y=self.HEIGHT #default
-		y_text=y-(y/8)+(TEXT_SIZE/2)-4
+		y_text=y-(y/8)+(TEXT_SIZE/2)-6
 		
 		#Draw STATION 
 		draw.text((12, y_text), "STATION " ,color,font=self.font)
@@ -485,7 +485,7 @@ class QSL():
 		draw.text((750, y_text), "QSL" ,color,font=self.font)
 
 
-		y_text = y_text+TEXT_SIZE
+		y_text = y_text+TEXT_SIZE+6
 		#Draw STATION 
 		draw.text((12, y_text), self.station ,color,font=self.font)
 
