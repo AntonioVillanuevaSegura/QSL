@@ -39,7 +39,9 @@ import re
 #Default parameters
 VERSION_SOFT= "2.0 Adif"
 MY_CALL ="F4LEC"
-DATE=datetime.datetime.today().strftime('%d/%m/%y')
+#DATE=datetime.datetime.today().strftime('%d/%m/%y')
+DATE=datetime.datetime.today().strftime('%Y/%m/%d')
+
 UTC=datetime.datetime.today().strftime('%H:%M')
 BAND="40m"
 MHZ="7.000"
@@ -347,6 +349,8 @@ class InterfaceGraphique(tk.Tk):
 		#Create QSL contact				
 		contact = {#Contact model QSO adif version eqsl
 			'CALL': self.sCALL.get(),
+			'QSO_DATE':self.sDate.get(),
+			'TIME_ON':self.sUtc.get(),			
 			'BAND': self.sBAND.get(),
 			'MODE': self.sMode.get(),
 			'RST_SENT': self.sRST_SEND.get(),
@@ -676,6 +680,8 @@ class Adif():
 	def __init__(self):	
 		self.contact = {
 			'CALL': None,
+			'QSO_DATE':None,
+			'TIME_ON':None,
 			'BAND': None,
 			'MODE': None,
 			'RST_SENT': None,
@@ -692,6 +698,8 @@ class Adif():
 		self.adif_version="3.1.0"
 		self.adif=None #Text adif
 		self.fichier='mi_log.adi' #Nom fichier externe
+		self.data=None
+		self.heure=None
 	
 	def valeur_vide(self,valeur):
 		""" valeur null"""
@@ -709,9 +717,9 @@ class Adif():
 		
 		maintenant = datetime.datetime.now()
 
-		date =  maintenant.strftime("%Y%m%d")
+		#date =  maintenant.strftime("%Y%m%d")
 		#heure =  maintenant.strftime("%H%M%S")
-		heure =  maintenant.strftime("%H%M")
+		#heure =  maintenant.strftime("%H%M")
 		
 		self.adif=""
 		if (not self.valeur_vide(self.programid) and not (check)):
@@ -726,11 +734,14 @@ class Adif():
 		if not(self.valeur_vide(self.contact['CALL'])):
 			self.adif += f"<CALL:{len(self.contact['CALL'])}>{self.contact['CALL']}"
 			
-		if not(self.valeur_vide(date)):
-			self.adif += f"<QSO_DATE:{ len( str (date))}>{date}"
+		if not(self.valeur_vide(self.contact["QSO_DATE"])):
+			self.contact["QSO_DATE"] = ''.join(filter(str.isdigit, self.contact["QSO_DATE"]))
+			self.adif += f"<QSO_DATE:{ len( str (self.contact['QSO_DATE']))}>{self.contact['QSO_DATE']}"
 			
-		if not(self.valeur_vide(str (heure))):		
-			self.adif += f"<TIME_ON:{ len( str (heure))}>{heure}"
+		if not(self.valeur_vide(str (self.contact['TIME_ON']))):	
+			#self.contact["TIME_ON"] =self.contact["TIME_ON"] .replace(':', '')	
+			self.contact["TIME_ON"] = ''.join(filter(str.isdigit, self.contact["TIME_ON"]))
+			self.adif += f"<TIME_ON:{ len( str (self.contact['TIME_ON']))}>{self.contact['TIME_ON']}"
 			
 		if not(self.valeur_vide(self.contact['BAND'])):		
 			self.adif += f"<BAND:{len(self.contact['BAND'])}>{self.contact['BAND']}"
