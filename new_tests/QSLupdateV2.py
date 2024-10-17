@@ -2,6 +2,13 @@
 Antonio Villanueva Segura F4LEC 
 Program to edit & print a QSL the input arguments are as follows
 
+Référence ADIF
+https://adif.org.uk/
+https://www.adif.org.uk/310/ADIF_310.htm
+
+adif validator
+https://www.rickmurphy.net/adifvalidator.html
+
 sudo apt-get install python3-pip
 sudo apt-get install python3-tk
 pip install tk
@@ -29,23 +36,22 @@ import time,datetime
 
 import re
 
-
 #Default parameters
-VERSION_SOFT= 2.0
+VERSION_SOFT= "2.0 Adif"
 MY_CALL ="F4LEC"
 DATE=datetime.datetime.today().strftime('%d/%m/%y')
 UTC=datetime.datetime.today().strftime('%H:%M')
 BAND="40m"
 MHZ="7.000"
 RST ="59"
-MODE ="LSB"
+MODE ="SSB"
 GRIDSQUARE="JN33qr" #user grid square
 QSLMSG="TNX QSO 73s"
 TRANSPARENCE =False
 SOURCE_IMAGE=""
 
 #GUI
-TEXT_WIDTH =20
+#TEXT_WIDTH =20
 
 #default QSL size x=843 , y= 537
 WIDTH=843
@@ -156,7 +162,7 @@ class InterfaceGraphique(tk.Tk):
 		   GRIDSQUARE EQSL_QSL_RCVD EQSL_QSLRDATE """
 		   
 		labelCALL = tk.Label(self.FrameSup, text="CALL", anchor="center")
-		labelCALL.grid(row=0, column=0, sticky="e", padx=4, pady=4)
+		labelCALL.grid(row=0, column=0, padx=4, pady=4)
 
 		
 		labelGRIDSQUARE = tk.Label(self.FrameSup, text="GRIDSQUARE", anchor="center")
@@ -166,7 +172,7 @@ class InterfaceGraphique(tk.Tk):
 		labelDate.grid(row=0, column=2, padx=4, pady=4)
 		
 		labelUtc = tk.Label(self.FrameSup, text="UTC", anchor="center")
-		labelUtc.grid(row=0, column=3, sticky="e", padx=4, pady=4)
+		labelUtc.grid(row=0, column=3, padx=4, pady=4)
 		
 		labeBAND = tk.Label(self.FrameSup, text="BAND", anchor="center")
 		labeBAND.grid(row=0, column=4, padx=4, pady=4)
@@ -179,6 +185,7 @@ class InterfaceGraphique(tk.Tk):
 		
 		labelRST_RCVD = tk.Label(self.FrameSup, text="RST TX" ,anchor="center")
 		labelRST_RCVD.grid(row=0, column=7, padx=4, pady=4)		
+		
 		
 		labelMODE = tk.Label(self.FrameSup, text="MODE", anchor="center")
 		labelMODE.grid(row=0, column=8, padx=4, pady=4)	
@@ -233,8 +240,26 @@ class InterfaceGraphique(tk.Tk):
 		self.RST_SEND=tk.Entry(self.FrameSup,textvariable=self.sRST_SEND,justify='center',bg="white",width=5)
 		self.RST_SEND.grid(row=1,column=7)		
 		
-		self.MODE=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white",width=5)
-		self.MODE.grid(row=1,column=8)	
+		#self.MODE=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white",width=5)
+		#self.MODE.grid(row=1,column=8)	
+		
+		vMODE = ("CW","AM","FM","SSB", "RTTY", "RTTYM","SSTV","FT8","PSK", 
+		"PSK2K", "ARDOP", "ATV", "C4FM", "CHIP", "CLO", "CONTESTI",
+		 "DIGITALVOICE", "DOMINO", "DSTAR", "FAX", "FSK441", "HELL",
+		 "ISCAT", "JT4", "JT6M", "JT9", "JT44", "JT65", "MFSK", "MSK144", "MT63",
+		 "OLIVIA", "OPERA", "PAC", "PAX", "PKT",  "Q15", "QRA64",
+		 "ROS",  "T10", "THOR", "THRB", "TOR",
+		  "V4", "VOI", "WINMOR", "WSPR")
+		
+		self.MODE = ttk.Combobox(self.FrameSup, values=vMODE, width=12, justify='center')
+		self.MODE.grid(row=1, column=8)
+		
+		self.MODE.set(vMODE[3])
+		
+		self.MODE['state'] = 'readonly'	
+		
+		self.MODE.bind("<<ComboboxSelected>>", self.update_Mode)
+		
 		
 		self.FrameSup.grid_columnconfigure(0, weight=0)
 		"""
@@ -282,9 +307,9 @@ class InterfaceGraphique(tk.Tk):
 		
 		
 		#Frame Buttons	 Button to create the QSL
-		self.CreateQSL_Adif=tk.Button(self.FrameButtons,text="Create", bg="red",
-		command=self.CreateQSL_Adif)	
-		self.CreateQSL_Adif.grid(row=0 ,column=2)
+		self.Create=tk.Button(self.FrameButtons,text="Create", bg="red",
+		command=self.Create)	
+		self.Create.grid(row=0 ,column=2)
 
 	def choose_text_color(self):
 		color = colorchooser.askcolor(title="Choose color")
@@ -298,8 +323,8 @@ class InterfaceGraphique(tk.Tk):
 			#self.sFrameColor = color[1]
 			self.sFrameColor.set(color[1])
 						
-	def CreateQSL_Adif(self):
-		""" Function to configure the QSL & Adif class variables retrieved from the graphical interface """
+	def Create(self):
+		""" Function to configure& create the QSL & Adif class variables retrieved from the graphical interface """
 		self.qsl.set_mystation (self.sMY_CALL.get())
 		self.qsl.set_Xpos (self.iPosX.get())
 		self.qsl.set_Ypos (self.iPosY.get())	
@@ -390,7 +415,10 @@ class InterfaceGraphique(tk.Tk):
 			self.Mhz.insert(0, array_value[1])				
 		else:
 			self.Mhz.insert(0,"")
-							
+	
+	def update_Mode (self,event):
+		self.sMode.set (self.MODE.get()	)
+					
 class QSL():
 	""" This class is the heart of the creation of the QSL card """
 	def __init__(self):		
