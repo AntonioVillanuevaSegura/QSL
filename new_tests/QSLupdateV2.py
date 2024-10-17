@@ -27,6 +27,8 @@ import sys
 
 import time,datetime
 
+import re
+
 
 #Default parameters
 VERSION_SOFT= 2.0
@@ -197,6 +199,8 @@ class InterfaceGraphique(tk.Tk):
 		
 		self.BAND['state'] = 'readonly'		
 		
+		#Bind combo - event changer tk.Entry self.Mhz
+		self.BAND.bind("<<ComboboxSelected>>", self.update_MhzEntry)
 		
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
@@ -350,7 +354,15 @@ class InterfaceGraphique(tk.Tk):
 			print(f"Selected file: {file_path}")
 		else:
 			print ("Cancel")
-				
+	
+	def update_MhzEntry(self, event):
+		"""Updates the Mhz input based on the selected band """
+
+		value = self.BAND.get()
+		
+		array_value = re.split(r'[\s-]+', value)
+		self.Mhz.delete(0, tk.END)
+		self.Mhz.insert(0, array_value[1])				
 							
 class QSL():
 	""" This class is the heart of the creation of the QSL card """
