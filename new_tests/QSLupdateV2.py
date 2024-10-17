@@ -40,6 +40,7 @@ MHZ="7.000"
 RST ="59"
 MODE ="LSB"
 GRIDSQUARE="JN33qr" #user grid square
+QSLMSG="TNX QSO 73s"
 TRANSPARENCE =False
 SOURCE_IMAGE=""
 
@@ -103,6 +104,7 @@ class InterfaceGraphique(tk.Tk):
 		self.sRST_RCVD=tk.StringVar(self.FrameSup,value =RST)		
 		self.sMode=tk.StringVar(self.FrameSup,value =MODE)	
 		self.sGRIDSQUARE=tk.StringVar(self.FrameSup,value =GRIDSQUARE)
+		self.sQSLMSG=tk.StringVar(self.FrameSup,value =QSLMSG)
 		#self.sQSL_SENT=tk.StringVar(self.FrameSup,value ='Y')			
 		
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
@@ -137,8 +139,17 @@ class InterfaceGraphique(tk.Tk):
 		labelSize.grid(row=0, column=3, sticky="ew", padx=2, pady=2)
 		
 		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow",width=5)
-		self.MySizeText.grid(row=1,column=3)					
-				
+		self.MySizeText.grid(row=1,column=3)
+		
+		
+		labelQSLMSG = tk.Label(self.FrameMyStation, text="QSLMSG",anchor="center",width=5)
+		labelQSLMSG.grid(row=2, column=0, sticky="ew", padx=2, pady=2)
+		
+		self.QSLMSG=tk.Entry(self.FrameMyStation,textvariable=self.sQSLMSG,justify='center',bg="yellow",width=50)
+		self.QSLMSG.grid(row=3,column=0,columnspan=4)		
+			
+		
+
 		#Frame Sup Labels QSO CONTACT 
 		"""CALL BAND MODE RST_SENT RST_RCVD QSL_SENT QSL_SENT_VIA QSLMSG APP_EQSL_AG
 		   GRIDSQUARE EQSL_QSL_RCVD EQSL_QSLRDATE """
@@ -314,7 +325,7 @@ class InterfaceGraphique(tk.Tk):
 			'RST_RCVD': self.sRST_RCVD.get(),
 			'QSL_SENT': self.QSL_SENT.get(),
 			'QSL_SENT_VIA':'e',
-			'QSLMSG':'TNX QSO - 73',
+			'QSLMSG':self.sQSLMSG.get(),
 			'APP_EQSL_AG':'',
 			'GRIDSQUARE':self.sGRIDSQUARE.get(),
 			'EQSL_QSL_RCVD':'',
