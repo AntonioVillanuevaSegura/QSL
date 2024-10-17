@@ -170,7 +170,7 @@ class InterfaceGraphique(tk.Tk):
 		labelGRIDSQUARE = tk.Label(self.FrameSup, text="GRIDSQUARE", anchor="center")
 		labelGRIDSQUARE.grid(row=0, column=1, padx=4, pady=4)		
 		
-		labelDate = tk.Label(self.FrameSup, text="DATE", anchor="center")
+		labelDate = tk.Label(self.FrameSup, text="YYYYMMDD", anchor="center")
 		labelDate.grid(row=0, column=2, padx=4, pady=4)
 		
 		labelUtc = tk.Label(self.FrameSup, text="UTC", anchor="center")
@@ -468,7 +468,8 @@ class QSL():
 		self.CALL=data
 		
 	def set_date (self,data):
-		self.date=data	
+		#YYMMDD
+		self.date=data[2:]
 		
 	def set_utc (self,data):
 		self.utc=data
