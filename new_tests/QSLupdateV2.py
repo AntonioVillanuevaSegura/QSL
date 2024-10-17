@@ -35,10 +35,11 @@ VERSION_SOFT= 2.0
 MY_CALL ="F4LEC"
 DATE=datetime.datetime.today().strftime('%d/%m/%y')
 UTC=datetime.datetime.today().strftime('%H:%M')
-BAND="40"
+BAND="40m"
 MHZ="7.000"
 RST ="59"
 MODE ="LSB"
+GRIDSQUARE="JN33qr" #user grid square
 TRANSPARENCE =False
 SOURCE_IMAGE=""
 
@@ -101,6 +102,7 @@ class InterfaceGraphique(tk.Tk):
 		self.sRST_SEND=tk.StringVar(self.FrameSup,value =RST)
 		self.sRST_RCVD=tk.StringVar(self.FrameSup,value =RST)		
 		self.sMode=tk.StringVar(self.FrameSup,value =MODE)	
+		self.sGRIDSQUARE=tk.StringVar(self.FrameSup,value =GRIDSQUARE)
 		#self.sQSL_SENT=tk.StringVar(self.FrameSup,value ='Y')			
 		
 		self.bTransparence=tk.BooleanVar(self.FrameSup,value =TRANSPARENCE)
@@ -144,39 +146,45 @@ class InterfaceGraphique(tk.Tk):
 		labelCALL = tk.Label(self.FrameSup, text="CALL", width=TEXT_WIDTH, anchor="center")
 		labelCALL.grid(row=0, column=0, sticky="e", padx=2, pady=2)
 		
+		labelGRIDSQUARE = tk.Label(self.FrameSup, text="GRIDSQUARE", width=TEXT_WIDTH, anchor="center")
+		labelGRIDSQUARE.grid(row=0, column=1, sticky="e", padx=2, pady=2)		
+		
 		labelDate = tk.Label(self.FrameSup, text="DATE", width=TEXT_WIDTH, anchor="center")
-		labelDate.grid(row=0, column=1, sticky="e", padx=2, pady=2)
+		labelDate.grid(row=0, column=2, sticky="e", padx=2, pady=2)
 		
 		labelUtc = tk.Label(self.FrameSup, text="UTC", width=TEXT_WIDTH, anchor="center")
-		labelUtc.grid(row=0, column=2, sticky="e", padx=2, pady=2)
+		labelUtc.grid(row=0, column=3, sticky="e", padx=2, pady=2)
 		
 		labeBAND = tk.Label(self.FrameSup, text="BAND", width=TEXT_WIDTH, anchor="center")
-		labeBAND.grid(row=0, column=3, sticky="e", padx=2, pady=2)
+		labeBAND.grid(row=0, column=4, sticky="e", padx=2, pady=2)
 		
 		labelMhz = tk.Label(self.FrameSup, text="Mhz", width=TEXT_WIDTH, anchor="center")
-		labelMhz.grid(row=0, column=4, sticky="e", padx=2, pady=2)
+		labelMhz.grid(row=0, column=5, sticky="e", padx=2, pady=2)
 		
 		labelRST_SENT = tk.Label(self.FrameSup, text="RST RX", width=TEXT_WIDTH, anchor="center")
-		labelRST_SENT.grid(row=0, column=5, sticky="e", padx=2, pady=2)
+		labelRST_SENT.grid(row=0, column=6, sticky="e", padx=2, pady=2)
 		
 		labelRST_RCVD = tk.Label(self.FrameSup, text="RST TX", width=TEXT_WIDTH, anchor="center")
-		labelRST_RCVD.grid(row=0, column=6, sticky="e", padx=2, pady=2)		
+		labelRST_RCVD.grid(row=0, column=7, sticky="e", padx=2, pady=2)		
 		
 		labelMODE = tk.Label(self.FrameSup, text="MODE", width=TEXT_WIDTH, anchor="center")
-		labelMODE.grid(row=0, column=7, sticky="e", padx=2, pady=2)	
+		labelMODE.grid(row=0, column=8, sticky="e", padx=2, pady=2)	
 		
 		labelQSL_SENT = tk.Label(self.FrameSup, text="QSL_SENT", width=TEXT_WIDTH, anchor="center")
-		labelQSL_SENT.grid(row=0, column=8, sticky="e", padx=2, pady=2)			
+		labelQSL_SENT.grid(row=0, column=9, sticky="e", padx=2, pady=2)			
 				
 		#FrameSup Entries  QSO CONTACT 	
 		self.CALL=tk.Entry(self.FrameSup,textvariable=self.sCALL,justify='center',bg="white")
 		self.CALL.grid(row=1,column=0)		
 		
+		self.GRIDSQUARE=tk.Entry(self.FrameSup,textvariable=self.sGRIDSQUARE,justify='center',bg="white")
+		self.GRIDSQUARE.grid(row=1,column=1)			
+		
 		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white",width=10)
-		self.Date.grid(row=1,column=1)	
+		self.Date.grid(row=1,column=2)	
 		
 		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white",width=7)
-		self.Utc.grid(row=1,column=2)	
+		self.Utc.grid(row=1,column=3)	
 		
 		"""
 		self.BAND=tk.Entry(self.FrameSup,textvariable=self.sBAND,justify='center',bg="white",width=10)
@@ -192,8 +200,8 @@ class InterfaceGraphique(tk.Tk):
 		'70cm 430-440','23cm 1240-1300','13cm 2300-2450','9cm','6cm 5650-5850',
 		'5cm','3cm 10000-10500','1,2cm 24000-24250','6mm 47000-4720',
 		'4mm 76000-81500','2,4mm 122250-123000','2mm 134000-141000','1,2mm 241000-250000')
-		self.BAND = ttk.Combobox(self.FrameSup, values=vBAND, width=22, justify='center')
-		self.BAND.grid(row=1, column=3)
+		self.BAND = ttk.Combobox(self.FrameSup, values=vBAND, width=19, justify='center')
+		self.BAND.grid(row=1, column=4)
 		
 		self.BAND.set(vBAND[5])
 		
@@ -204,16 +212,16 @@ class InterfaceGraphique(tk.Tk):
 		
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
-		self.Mhz.grid(row=1,column=4)
+		self.Mhz.grid(row=1,column=5)
 		
 		self.RST_RCVD=tk.Entry(self.FrameSup,textvariable=self.sRST_RCVD,justify='center',bg="white",width=5)
-		self.RST_RCVD.grid(row=1,column=5)	
+		self.RST_RCVD.grid(row=1,column=6)	
 
 		self.RST_SEND=tk.Entry(self.FrameSup,textvariable=self.sRST_SEND,justify='center',bg="white",width=5)
-		self.RST_SEND.grid(row=1,column=6)		
+		self.RST_SEND.grid(row=1,column=7)		
 		
 		self.MODE=tk.Entry(self.FrameSup,textvariable=self.sMode,justify='center',bg="white",width=5)
-		self.MODE.grid(row=1,column=7)	
+		self.MODE.grid(row=1,column=8)	
 		
 		"""
 		self.QSL_SENT=tk.Entry(self.FrameSup,textvariable=self.sQSL_SENT,justify='center',bg="white",width=5)
@@ -222,7 +230,7 @@ class InterfaceGraphique(tk.Tk):
 		
 		vQSL_SENT = ('Y','N')
 		self.QSL_SENT = ttk.Combobox(self.FrameSup, values=vQSL_SENT, width=5, justify='center')
-		self.QSL_SENT.grid(row=1, column=8)
+		self.QSL_SENT.grid(row=1, column=9)
 		
 		self.QSL_SENT.set(vQSL_SENT[1])
 		
@@ -260,9 +268,9 @@ class InterfaceGraphique(tk.Tk):
 		
 		
 		#Frame Buttons	 Button to create the QSL
-		self.CreateQSL=tk.Button(self.FrameButtons,text="Create", bg="red",
-		command=self.CreateQSL)	
-		self.CreateQSL.grid(row=0 ,column=2)
+		self.CreateQSL_Adif=tk.Button(self.FrameButtons,text="Create", bg="red",
+		command=self.CreateQSL_Adif)	
+		self.CreateQSL_Adif.grid(row=0 ,column=2)
 
 	def choose_text_color(self):
 		color = colorchooser.askcolor(title="Choose color")
@@ -276,8 +284,8 @@ class InterfaceGraphique(tk.Tk):
 			#self.sFrameColor = color[1]
 			self.sFrameColor.set(color[1])
 						
-	def CreateQSL(self):
-		""" Function to configure the QSL class variables retrieved from the graphical interface """
+	def CreateQSL_Adif(self):
+		""" Function to configure the QSL & Adif class variables retrieved from the graphical interface """
 		self.qsl.set_mystation (self.sMY_CALL.get())
 		self.qsl.set_Xpos (self.iPosX.get())
 		self.qsl.set_Ypos (self.iPosY.get())	
@@ -300,7 +308,7 @@ class InterfaceGraphique(tk.Tk):
 		#Create QSL contact				
 		contact = {#Contact model QSO adif version eqsl
 			'CALL': self.sCALL.get(),
-			'BAND': self.sMhz.get(),
+			'BAND': self.sBAND.get(),
 			'MODE': self.sMode.get(),
 			'RST_SENT': self.sRST_SEND.get(),
 			'RST_RCVD': self.sRST_RCVD.get(),
@@ -308,7 +316,7 @@ class InterfaceGraphique(tk.Tk):
 			'QSL_SENT_VIA':'e',
 			'QSLMSG':'TNX QSO - 73',
 			'APP_EQSL_AG':'',
-			'GRIDSQUARE':'',
+			'GRIDSQUARE':self.sGRIDSQUARE.get(),
 			'EQSL_QSL_RCVD':'',
 			'EQSL_QSLRDATE':''
 		}
@@ -361,6 +369,8 @@ class InterfaceGraphique(tk.Tk):
 		value = self.BAND.get()
 		
 		array_value = re.split(r'[\s-]+', value)
+		#self.sBAND=array_value[0] # update variable sBAND adif
+		self.sBAND.set (array_value[0]) # update variable sBAND adif
 		self.Mhz.delete(0, tk.END)
 		self.Mhz.insert(0, array_value[1])				
 							
