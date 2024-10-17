@@ -119,8 +119,8 @@ class InterfaceGraphique(tk.Tk):
 		self.MyPosY=tk.Entry(self.FrameMyStation,textvariable=self.iPosY,justify='center',bg="yellow")
 		self.MyPosY.grid(row=0,column=6)	
 		
-		labelY = tk.Label(self.FrameMyStation, text="SIZE")
-		labelY.grid(row=0, column=7, sticky="e", padx=5, pady=5)
+		labelSize = tk.Label(self.FrameMyStation, text="SIZE")
+		labelSize.grid(row=0, column=7, sticky="e", padx=5, pady=5)
 		
 		self.MySizeText=tk.Entry(self.FrameMyStation,textvariable=self.iSizeText,justify='center',bg="yellow")
 		self.MySizeText.grid(row=0,column=8)					
