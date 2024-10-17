@@ -176,19 +176,27 @@ class InterfaceGraphique(tk.Tk):
 		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white",width=7)
 		self.Utc.grid(row=1,column=2)	
 		
-	
+		"""
 		self.BAND=tk.Entry(self.FrameSup,textvariable=self.sBAND,justify='center',bg="white",width=10)
 		self.BAND.grid(row=1,column=3)
-	
 		"""
-		vBAND = ('2222 m','630 m')
-		self.BAND = ttk.Combobox(self.FrameSup, values=vBAND, width=5, justify='center')
-		self.BAND.grid(row=1, column=8)
+	
 		
-		self.BAND.set(vBAND[1])
+		vBAND = ('2222m 0,1357-0,1378','630m 0,472-0,479','160m 1,810-1,850',
+		'80m 3,500-3,800','60m 5,3515-5,3665','40m 7,000-7,200',
+		'30m 10,100-10,150','20m 14,000-14,350','17m 18,068-18,168',
+		'15m 21,000-21,450','12m 24,890-24,990','11m CB','10m 28,000-29,700',
+		'6m 50,000-52,000','4m 70-70,500 MHz','2m 144-146','1,35m',
+		'70cm 430-440','23cm 1240-1300','13cm 2300-2450','9cm','6cm 5650-5850',
+		'5cm','3cm 10000-10500','1,2cm 24000-24250','6mm 47000-4720',
+		'4mm 76000-81500','2,4mm 122250-123000','2mm 134000-141000','1,2mm 241000-250000')
+		self.BAND = ttk.Combobox(self.FrameSup, values=vBAND, width=22, justify='center')
+		self.BAND.grid(row=1, column=3)
+		
+		self.BAND.set(vBAND[5])
 		
 		self.BAND['state'] = 'readonly'		
-		"""
+		
 		
 		
 		self.Mhz=tk.Entry(self.FrameSup,textvariable=self.sMhz,justify='center',bg="white")
