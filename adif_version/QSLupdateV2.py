@@ -202,10 +202,13 @@ class InterfaceGraphique(tk.Tk):
 		self.GRIDSQUARE=tk.Entry(self.FrameSup,textvariable=self.sGRIDSQUARE,justify='center',bg="white",width=10)
 		self.GRIDSQUARE.grid(row=1,column=1)			
 		
-		self.Date=tk.Entry(self.FrameSup,textvariable=self.sDate,justify='center',bg="white",width=10)
+		
+		vcmd = (self.FrameSup.register(self.validate_data), '%P')	#Function to analyze data input in real time	
+		
+		self.Date=tk.Entry(self.FrameSup,validate="key",validatecommand=vcmd,textvariable=self.sDate,justify='center',bg="white",width=10)
 		self.Date.grid(row=1,column=2)	
 		
-		self.Utc=tk.Entry(self.FrameSup,textvariable=self.sUtc,justify='center',bg="white",width=7)
+		self.Utc=tk.Entry(self.FrameSup,validate="key",validatecommand=vcmd,textvariable=self.sUtc,justify='center',bg="white",width=7)
 		self.Utc.grid(row=1,column=3)	
 		
 		"""
@@ -372,11 +375,12 @@ class InterfaceGraphique(tk.Tk):
 
 		#Make the graphic QSL													
 		self.qsl.run()
-				
+	
 	def browser_folder(self, event=None):
-		""" Function to browse and select image files """
+		""" Select an image file that will be the basis of the QSL """
 		if self.dialog_open:
 			return
+			
 		filetypes = (
 			('All image files', ('*.jpg', '*.jpeg', '*.png', '*.gif', '*.bmp')),
 			('JPEG files', '*.jpg'),
@@ -392,6 +396,7 @@ class InterfaceGraphique(tk.Tk):
 				title='Select Base QSL image',
 				initialdir=initial_dir,
 				filetypes=filetypes,
+				multiple=False,
 				parent=self
 			)
 		finally:
@@ -422,6 +427,11 @@ class InterfaceGraphique(tk.Tk):
 	
 	def update_Mode (self,event):
 		self.sMode.set (self.MODE.get()	)
+
+	def validate_data(self,text):
+		# Allows only digits and the characters / or : Analyzes date and time in real time
+		return all(char.isdigit() or char == '/' or char == ':'  for char in text)		
+		
 					
 class QSL():
 	""" This class is the heart of the creation of the QSL card """
