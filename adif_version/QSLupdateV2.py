@@ -34,6 +34,7 @@ import sys
 
 import time,datetime
 
+
 import re
 
 #Default parameters
@@ -170,7 +171,7 @@ class InterfaceGraphique(tk.Tk):
 		labelGRIDSQUARE = tk.Label(self.FrameSup, text="GRIDSQUARE", anchor="center")
 		labelGRIDSQUARE.grid(row=0, column=1, padx=4, pady=4)		
 		
-		labelDate = tk.Label(self.FrameSup, text="YYYYMMDD", anchor="center")
+		labelDate = tk.Label(self.FrameSup, text="YYYY/MM/DD", anchor="center")
 		labelDate.grid(row=0, column=2, padx=4, pady=4)
 		
 		labelUtc = tk.Label(self.FrameSup, text="UTC", anchor="center")
@@ -203,12 +204,14 @@ class InterfaceGraphique(tk.Tk):
 		self.GRIDSQUARE.grid(row=1,column=1)			
 		
 		
-		vcmd = (self.FrameSup.register(self.validate_data), '%P')	#Function to analyze data input in real time	
+		vcmd = (self.FrameSup.register(self.validate_date), '%P')	#Function to analyze data input in real time	
 		
 		self.Date=tk.Entry(self.FrameSup,validate="key",validatecommand=vcmd,textvariable=self.sDate,justify='center',bg="white",width=10)
 		self.Date.grid(row=1,column=2)	
 		
-		self.Utc=tk.Entry(self.FrameSup,validate="key",validatecommand=vcmd,textvariable=self.sUtc,justify='center',bg="white",width=7)
+		vcmd2 = (self.FrameSup.register(self.validate_time), '%P')	#Function to analyze data input in real time
+		
+		self.Utc=tk.Entry(self.FrameSup,validate="key",validatecommand=vcmd2,textvariable=self.sUtc,justify='center',bg="white",width=7)
 		self.Utc.grid(row=1,column=3)	
 		
 		"""
@@ -428,9 +431,68 @@ class InterfaceGraphique(tk.Tk):
 	def update_Mode (self,event):
 		self.sMode.set (self.MODE.get()	)
 
-	def validate_data(self,text):
-		# Allows only digits and the characters / or : Analyzes date and time in real time
-		return all(char.isdigit() or char == '/' or char == ':'  for char in text)		
+	def validate_date(self, text, max_length=10):
+		if len(text) > max_length:
+			return False
+
+		# Empty
+		if len(text) == 0:
+			return True
+
+		# Only digits and /
+		if not all(char.isdigit() or char == '/' for char in text):
+			return False
+
+		# YYYY/MM/DD
+		if len(text) >= 5:
+
+			if text[4] != '/':
+				return False
+
+		if len(text) >= 8:
+			if text[7] != '/':
+				return False
+
+
+		if len(text) == 10:
+			try:
+				year, month, day = map(int, text.split('/'))
+
+				if year < 1910 or year > 2100:
+					return False
+				date = datetime.datetime(year, month, day)
+			except ValueError:
+				return False
+
+		return True
+		
+	def validate_time(self, text, max_length=5):
+		if len(text) > max_length:
+			return False
+
+		if len(text) == 0: #Empty
+			return True
+
+		# digits only and :
+		if not all(char.isdigit() or char == ':' for char in text):
+			return False
+
+		# Check the HH:MM format
+		if len(text) >= 3:
+			if text[2] != ':':
+				return False
+			
+			if len(text) >= 2:
+				hours = int(text[:2])
+				if hours < 0 or hours > 23:
+					return False
+
+			if len(text) == 5:
+				minutes = int(text[3:])
+				if minutes < 0 or minutes > 59:
+					return False
+
+		return True		
 		
 					
 class QSL():
