@@ -336,7 +336,9 @@ class InterfaceGraphique(tk.Tk):
 		self.qsl.set_mystation (self.sMY_CALL.get())
 		self.qsl.set_Xpos (self.iPosX.get())
 		self.qsl.set_Ypos (self.iPosY.get())	
-		self.qsl.set_SizeText (self.iSizeText.get())			
+		self.qsl.set_SizeText (self.iSizeText.get())
+		
+		self.qsl.set_msg (self.sQSLMSG.get())
 		
 		#QSL contact
 		self.qsl.set_station (self.sCALL.get())
@@ -494,7 +496,6 @@ class InterfaceGraphique(tk.Tk):
 
 		return True		
 		
-					
 class QSL():
 	""" This class is the heart of the creation of the QSL card """
 	def __init__(self):		
@@ -502,6 +503,8 @@ class QSL():
 		self.myXpos=None
 		self.myYpos=None
 		self.MySizeText=None
+		
+		self.msg=None
 		
 		self.CALL =None
 		self.date=None
@@ -534,7 +537,10 @@ class QSL():
 		self.myYpos=data	
 		
 	def set_SizeText(self,data):
-		self.MySizeText=data					
+		self.MySizeText=data	
+		
+	def set_msg(self,data):	
+		self.msg=data			
 		
 	def set_station(self,data):
 		self.CALL=data
@@ -646,6 +652,9 @@ class QSL():
 		y=self.HEIGHT #default
 		y_text=y-(y/8)+(TEXT_SIZE/2)-6
 		
+		#Draw MSG
+		draw.text((5, y_text-40), self.msg ,color,font=self.font)
+		
 		#Draw STATION 
 		draw.text((12, y_text), "STATION " ,color,font=self.font)
 
@@ -687,6 +696,7 @@ class QSL():
 		#Draw MODE
 		draw.text((630, y_text), self.MODE ,color,font=self.font)
 		
+		#Write message if it exists
 
 		#Maximum size control for the position and size of my text 
 		if myX>self.WIDTH:
