@@ -403,6 +403,8 @@ class AdifExtract():
 				self.update_qsl_data(self.contact_model)
 				
 				#Set data to QSL class 
+				print ("DEBUG C :",self.contact_model)				
+				print ("DEBUG Q :",self.qsl_data)
 				self.qsl.setup_qsl_data(self.qsl_data)
 				
 				#Create QSL
