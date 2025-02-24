@@ -979,16 +979,48 @@ class Cabrillo:
 			'EQSL_QSL_RCVD': None,
 			'EQSL_QSLRDATE': None
 		}
-
-		self.contest = "REF-SSB"
+		"""
+		START-OF-LOG: 3.0
+		CREATED-BY: Logging software
+		CALLSIGN: K3ZO
+		LOCATION: DX
+		CATEGORY-BAND: ALL
+		CATEGORY-MODE: CW
+		CATEGORY-OPERATOR: SINGLE-OP
+		CATEGORY-POWER: HIGH
+		CATEGORY-STATION: FIXED
+		CATEGORY-TRANSMITTER: ONE
+		CLAIMED-SCORE: 21216
+		NAME: Fred Laun
+		ADDRESS: P. O. Box 9777
+		ADDRESS: Lemple Sihls, FL 22767-0012
+		ADDRESS: USA
+		RIG: TS450SAT
+		SOAPBOX:
+		QSO: 14000 CW 2008-01-26 1256 K3ZO     599 001    F6KQV         599 67
+		QSO: 14000 CW 2008-01-26 1257 K3ZO     599 002    F6DQZ         599 02
+		QSO: 14000 CW 2008-01-26 1258 K3ZO     599 003    F5KEE         599 91
+		QSO: 14000 CW 2008-01-26 1258 K3ZO     599 004    TM5Z          599 54
+		../..
+		QSO: 14000 CW 2008-01-27 1701 K3ZO     599 107    F5SDH         599 35
+		QSO: 14000 CW 2008-01-27 1704 K3ZO     599 108    F5NQL         599 89
+		END-OF-LOG:
+		"""
+		self.cabrillo_version = "3.0"
+		self.create_by:"F4LEC Antonio Villanueva"
 		self.callsign = "YOUR-CALLSIGN"
+		self.location="06"
+		self.category_band = "ALL"		
+		self.category_mode = "MIXED"		
 		self.category_operator = "SINGLE-OP"
-		self.category_band = "ALL"
-		self.category_power = "HIGH"
-		self.category_mode = "MIXED"
+		self.category_transmitter ="ONE"
+		self.category_assisted=""
+		self.category_station="FIXED"
+		self.category_power = "LP"
+		self.grid_locator=""		
+
 		self.claimed_score = 0
 		self.club = "YOUR-CLUB"
-		self.cabrillo_version = "3.0"
 		self.cabrillo = None
 		self.filename = 'my_log.cbr'
 
@@ -1001,37 +1033,44 @@ class Cabrillo:
 
 	def create_cabrillo(self):
 		"""
-	START-OF-LOG: 3.0
-	CREATED-BY: Logging software
-	CALLSIGN: K3ZO
-	LOCATION: DX
-	CATEGORY-BAND: ALL
-	CATEGORY-MODE: CW
-	CATEGORY-OPERATOR: SINGLE-OP
-	CATEGORY-POWER: HIGH
-	CATEGORY-STATION: FIXED
-	CATEGORY-TRANSMITTER: ONE
-	CLAIMED-SCORE: 21216
-	NAME: Fred Laun
-	ADDRESS: P. O. Box 9777
-	ADDRESS: Lemple Sihls, FL 22767-0012
-	ADDRESS: USA
-	RIG: TS450SAT
-	SOAPBOX:
+		START-OF-LOG: 3.0
+		CREATED-BY: Logging software
+		CALLSIGN: K3ZO
+		LOCATION: DX
+		CATEGORY-BAND: ALL
+		CATEGORY-MODE: CW
+		CATEGORY-OPERATOR: SINGLE-OP
+		CATEGORY-POWER: HIGH
+		CATEGORY-STATION: FIXED
+		CATEGORY-TRANSMITTER: ONE
+		CLAIMED-SCORE: 21216
+		NAME: Fred Laun
+		ADDRESS: P. O. Box 9777
+		ADDRESS: Lemple Sihls, FL 22767-0012
+		ADDRESS: USA
+		RIG: TS450SAT
+		SOAPBOX:
 		"""
 		
 		now = datetime.datetime.now()
 		
 		self.cabrillo = f"START-OF-LOG: {self.cabrillo_version}\n"
-		self.cabrillo += "CREATED-BY: F4LEC\n"		
-		self.cabrillo += f"CONTEST: {self.contest}\n"
+		self.cabrillo += "CREATED-BY: F4LEC\n"	
 		self.cabrillo += f"CALLSIGN: {self.callsign}\n"
-		self.cabrillo += f"CATEGORY-OPERATOR: {self.category_operator}\n"
+		self.cabrillo += f"LOCATION: {self.location}\n"				
 		self.cabrillo += f"CATEGORY-BAND: {self.category_band}\n"
-		self.cabrillo += f"CATEGORY-POWER: {self.category_power}\n"
 		self.cabrillo += f"CATEGORY-MODE: {self.category_mode}\n"
+		self.cabrillo += f"CATEGORY-OPERATOR: {self.category_operator}\n"
+		self.cabrillo += f"CATEGORY-POWER: {self.category_power}\n"
+		self.cabrillo += f"CATEGORY-STATION: {self.category_station}\n"
+		self.cabrillo += f"CATEGORY-TRANSMITTER: {self.category_transmitter}\n"		
 		self.cabrillo += f"CLAIMED-SCORE: {self.claimed_score}\n"
-		self.cabrillo += f"CLUB: {self.club}\n"
+		self.cabrillo += f"NAME: {self.name}\n"	
+		self.cabrillo += f"ADDRESS: {self.address1}\n"
+		self.cabrillo += f"ADDRESS: {self.address2}\n"	
+		self.cabrillo += f"ADDRESS: {self.address3}\n"													
+		self.cabrillo += f"RIG: {self.rig}\n"	
+		self.cabrillo += "SOAPBOX:\n"
 
 		# QSO line
 		freq = self.contact['FREQ'] if self.contact['FREQ'] else self.contact['BAND']
