@@ -1107,7 +1107,7 @@ class Cabrillo:
 		else:
 			return False
 								
-	def check(self,test):	
+	def check(self,mot):	
 		""" analyse l'existence du fichier et son contenu"""
 		
 		if not (self.exist_file ()):
@@ -1120,27 +1120,27 @@ class Cabrillo:
 		except IOError as e:
 			return False
 				
-		# test words in fichier 
+		# test if word exist in the file  
 		# Check PROGRAMID ADIF_Ver EOH 
 		#tests=("START-OF-LOG: 3.0")
-		tests=test
+		tests=mot
 		
-		for test in tests:
-			if test in contenu :
+		for mot in tests:
+			if mot in contenu :
 				return True
 		
 		return False		
 
 	"""
 	def eliminar_palabra(self, palabra_a_eliminar):
-		# Leer el contenido del archivo
+		# Lire le fichier
 		with open(self.fichier, 'r') as archivo:
 			contenido = archivo.read()
 		
-		# Eliminar la palabra
+		# efface mot par de mot vide
 		contenido_modificado = contenido.replace(palabra_a_eliminar, '')
 		
-		# Escribir el contenido modificado de vuelta al archivo
+		# Ecrire le fichier modifie
 		with open(nombre_archivo, 'w') as archivo:
 			archivo.write(contenido_modificado)
 	"""
