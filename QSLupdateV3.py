@@ -957,7 +957,6 @@ class Adif():
 		
 		return False		
 
-
 class Cabrillo:
 	def __init__(self):
 
@@ -1017,12 +1016,18 @@ class Cabrillo:
 		self.category_assisted=""
 		self.category_station="FIXED"
 		self.category_power = "LP"
-		self.grid_locator=""		
+		self.grid_locator=""
+		
+		self.name="Antonio Villanueva"
+		self.address1=""
+		self.address2=""
+		self.address3=""
+		self.rig=""
 
 		self.claimed_score = 0
 		self.club = "YOUR-CLUB"
 		self.cabrillo = None
-		self.filename = 'my_log.cbr'
+		self.fichier = 'my_log.cbr'
 
 	def set_contact(self, contact):
 		for key, value in contact.items():
@@ -1051,49 +1056,48 @@ class Cabrillo:
 		RIG: TS450SAT
 		SOAPBOX:
 		"""
-		
-		now = datetime.datetime.now()
-		
-		self.cabrillo = f"START-OF-LOG: {self.cabrillo_version}\n"
-		self.cabrillo += "CREATED-BY: F4LEC\n"	
-		self.cabrillo += f"CALLSIGN: {self.callsign}\n"
-		self.cabrillo += f"LOCATION: {self.location}\n"				
-		self.cabrillo += f"CATEGORY-BAND: {self.category_band}\n"
-		self.cabrillo += f"CATEGORY-MODE: {self.category_mode}\n"
-		self.cabrillo += f"CATEGORY-OPERATOR: {self.category_operator}\n"
-		self.cabrillo += f"CATEGORY-POWER: {self.category_power}\n"
-		self.cabrillo += f"CATEGORY-STATION: {self.category_station}\n"
-		self.cabrillo += f"CATEGORY-TRANSMITTER: {self.category_transmitter}\n"		
-		self.cabrillo += f"CLAIMED-SCORE: {self.claimed_score}\n"
-		self.cabrillo += f"NAME: {self.name}\n"	
-		self.cabrillo += f"ADDRESS: {self.address1}\n"
-		self.cabrillo += f"ADDRESS: {self.address2}\n"	
-		self.cabrillo += f"ADDRESS: {self.address3}\n"													
-		self.cabrillo += f"RIG: {self.rig}\n"	
-		self.cabrillo += "SOAPBOX:\n"
+		# check l'existence du fichier cabrillo
+		check = self.check("START-OF-LOG: 3.0")
+		self.cabrillo=""
+		if not (check):
+			now = datetime.datetime.now()			
+			self.cabrillo = f"START-OF-LOG: {self.cabrillo_version}\n"
+			self.cabrillo += "CREATED-BY: F4LEC\n"	
+			self.cabrillo += f"CALLSIGN: {self.callsign}\n"
+			self.cabrillo += f"LOCATION: {self.location}\n"				
+			self.cabrillo += f"CATEGORY-BAND: {self.category_band}\n"
+			self.cabrillo += f"CATEGORY-MODE: {self.category_mode}\n"
+			self.cabrillo += f"CATEGORY-OPERATOR: {self.category_operator}\n"
+			self.cabrillo += f"CATEGORY-POWER: {self.category_power}\n"
+			self.cabrillo += f"CATEGORY-STATION: {self.category_station}\n"
+			self.cabrillo += f"CATEGORY-TRANSMITTER: {self.category_transmitter}\n"		
+			self.cabrillo += f"CLAIMED-SCORE: {self.claimed_score}\n"
+			self.cabrillo += f"NAME: {self.name}\n"	
+			self.cabrillo += f"ADDRESS: {self.address1}\n"
+			self.cabrillo += f"ADDRESS: {self.address2}\n"	
+			self.cabrillo += f"ADDRESS: {self.address3}\n"													
+			self.cabrillo += f"RIG: {self.rig}\n"	
+			self.cabrillo += "SOAPBOX:\n"
 
 		# QSO line
 		freq = self.contact['FREQ'] if self.contact['FREQ'] else self.contact['BAND']
-		date = self.contact['QSO_DATE'].replace('-', '')
+		#date = self.contact['QSO_DATE'].replace('-', '')
+		date = self.contact['QSO_DATE'].replace('/', '-')
 		time = self.contact['TIME_ON'].replace(':', '')
 		
 		qso_line = f"QSO: {freq:5} {self.contact['MODE']:2} {date} {time} "
 		qso_line += f"{self.callsign} {self.contact['RST_SENT']:6}  "
 		qso_line += f"{self.contact['CALL']} {self.contact['RST_RCVD']:6} \n"		
-		
-		"""
-		print ("DEBUG",self.callsign,"RS SENT", self.contact['RST_SENT']," RS EXC ",self.contact['EXCHANGE_SENT'])
-		qso_line += f"{self.callsign:13} {self.contact['RST_SENT']:3} {self.contact['EXCHANGE_SENT']:6} "
-		qso_line += f"{self.contact['CALL']:13} {self.contact['RST_RCVD']:3} {self.contact['EXCHANGE_RCVD']:6}\n"
-		"""
 		self.cabrillo += qso_line
 		self.cabrillo += "END-OF-LOG:\n"
-
+		
+		#Exist END-OF_LOG: ?
+		#check = self.check("END-OF-LOG:")
 		self.write()
 		return self.cabrillo
 
 	def write(self):
-		with open(self.filename, 'a') as f:
+		with open(self.fichier, 'a') as f:
 			f.write(self.cabrillo)
 
 	def exist_file(self):
@@ -1103,9 +1107,9 @@ class Cabrillo:
 		else:
 			return False
 								
-	def check(self):	
+	def check(self,test):	
 		""" analyse l'existence du fichier et son contenu"""
-		"""
+		
 		if not (self.exist_file ()):
 			return False	
 		
@@ -1118,17 +1122,30 @@ class Cabrillo:
 				
 		# test words in fichier 
 		# Check PROGRAMID ADIF_Ver EOH 
-		tests=("PROGRAMID","ADIF_Ver","EOH")
+		#tests=("START-OF-LOG: 3.0")
+		tests=test
 		
 		for test in tests:
 			if test in contenu :
 				return True
 		
 		return False		
-		"""
-		return True
-			
-			
+
+	"""
+	def eliminar_palabra(self, palabra_a_eliminar):
+		# Leer el contenido del archivo
+		with open(self.fichier, 'r') as archivo:
+			contenido = archivo.read()
+		
+		# Eliminar la palabra
+		contenido_modificado = contenido.replace(palabra_a_eliminar, '')
+		
+		# Escribir el contenido modificado de vuelta al archivo
+		with open(nombre_archivo, 'w') as archivo:
+			archivo.write(contenido_modificado)
+	"""
+
+				
 if __name__ == "__main__":
 	
 	print ("soft version ", VERSION_SOFT) #Version logiciel
