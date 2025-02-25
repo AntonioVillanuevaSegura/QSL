@@ -1022,10 +1022,10 @@ class Cabrillo:
 		self.address1=""
 		self.address2=""
 		self.address3=""
-		self.rig=""
+		self.rig="ICOM 7300" # TX
 
 		self.claimed_score = 0
-		self.club = "YOUR-CLUB"
+		self.club = "" #Club
 		self.cabrillo = None
 		self.fichier = 'my_log.cbr'
 
@@ -1081,7 +1081,6 @@ class Cabrillo:
 
 		# QSO line
 		freq = self.contact['FREQ'] if self.contact['FREQ'] else self.contact['BAND']
-		#date = self.contact['QSO_DATE'].replace('-', '')
 		date = self.contact['QSO_DATE'].replace('/', '-')
 		time = self.contact['TIME_ON'].replace(':', '')
 		
@@ -1097,9 +1096,31 @@ class Cabrillo:
 		return self.cabrillo
 
 	def write(self):
+		"""
 		with open(self.fichier, 'a') as f:
 			f.write(self.cabrillo)
-
+		"""
+		if self.exist_file():
+			# Lire le fichier
+			with open(self.fichier, 'r') as archivo:
+				contenido = archivo.read()
+			# efface mot par de mot vide
+			contenido_modificado = contenido.replace("END-OF-LOG:\n", '')
+			
+			#Ajoute nouveau text
+			contenido_modificado +=self.cabrillo
+			
+			# Ecrire le fichier modifie
+			with open(self.fichier, 'w') as archivo:
+				archivo.write(contenido_modificado)					
+				
+		else:
+			with open(self.fichier, 'a') as f:
+				f.write(self.cabrillo)
+		
+	
+		
+		
 	def exist_file(self):
 		""" Check for the existence of a file use in check  """
 		if os.path.exists(self.fichier):
