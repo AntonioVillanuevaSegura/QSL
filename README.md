@@ -49,5 +49,6 @@ First we need to install the different dependencies:
 and then proceed to compilation
 
 	python3 -m nuitka --standalone --onefile --enable-plugin=tk-inter QSLupdate.py
+	python3 -m nuitka --standalone --onefile --follow-imports QSLupdate.py
 
 
